@@ -25,8 +25,6 @@ export function handleInputChangeEventValue(e: React.ChangeEvent<HTMLInputElemen
 			}
 		}
 	}
-  console.log('value', value)
-  console.log('decimals', decimals)
 	const	raw = parseUnits(value, decimals || 18);
 	return ({raw: raw, normalized: amount.toString() || '0'});
 }
