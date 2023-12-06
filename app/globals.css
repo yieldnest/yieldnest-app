@@ -29,8 +29,8 @@
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 20% 98%;
 
-    --border: 176 59% 24%;
-    --input: 220 13% 91%;
+    --border: 176 70% 29%;
+    --input: 229 77% 7%;
     --ring: 224 71.4% 4.1%;
  
     --radius: 0.5rem;
@@ -74,4 +74,14 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none;
+  -moz-appearance: textfield;
+  margin: 0; 
+}
+input[type=number] {
+  -moz-appearance: textfield;
 }
