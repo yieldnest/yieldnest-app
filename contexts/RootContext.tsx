@@ -9,11 +9,11 @@ function RootContext({children, supportedChains}: {
 	children: ReactElement
 	supportedChains: Chain[]
 }): ReactElement {
-	return (
+  return (
     <Web3ContextApp supportedChains={supportedChains}>
       {children}
     </Web3ContextApp>
-	)
+  )
 }
 
 export { RootContext }

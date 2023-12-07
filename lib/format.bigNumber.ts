@@ -7,16 +7,16 @@ export type	TNormalizedBN = {
 }
 
 export const toBigInt = (amount?: TNumberish): bigint => {
-	return BigInt(amount || 0);
+  return BigInt(amount || 0)
 }
 
 export const toNormalizedValue = (value: bigint, decimals?: number): number => {
-	return Number(formatUnits(value, decimals ?? 18));
+  return Number(formatUnits(value, decimals ?? 18))
 }
 
 export const toNormalizedBN = (value: TNumberish, decimals?: number): TNormalizedBN => ({
-	raw: toBigInt(value),
-	normalized: formatUnits(toBigInt(value), decimals ?? 18)
+  raw: toBigInt(value),
+  normalized: formatUnits(toBigInt(value), decimals ?? 18)
 })
 
 export { toNormalizedValue as formatToNormalizedValue }

@@ -17,8 +17,8 @@ export const STETH_TOKEN_ADDRESS = toAddress('0x1643E812aE58766192Cf7D2Cf9567dF2
 export const RETH_TOKEN_ADDRESS = toAddress('0x178E141a0E3b34152f73Ff610437A7bf9B83267A')
 
 export const TOKEN_LIST: TIndexedTokenInfo[] = [
-	{...ETH_TOKEN, index: 0},
-];
+  {...ETH_TOKEN, index: 0},
+]
 
 export const BIG_ZERO = 0n
 export const MAX_UINT_256 = 0x7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffn

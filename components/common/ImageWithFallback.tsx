@@ -7,30 +7,30 @@ import type { ImageProps } from 'next/image'
 import type { CSSProperties, ReactElement } from 'react'
 
 function	ImageWithFallback(props: ImageProps): ReactElement {
-	const {alt, src, ...rest} = props
-	const [imageSrc, set_imageSrc] = useState(`${src}?fallback=true`)
-	const [imageStyle, set_imageStyle] = useState<CSSProperties>({})
+  const {alt, src, ...rest} = props
+  const [imageSrc, set_imageSrc] = useState(`${src}?fallback=true`)
+  const [imageStyle, set_imageStyle] = useState<CSSProperties>({})
 
-	useUpdateEffect((): void => {
-		set_imageSrc(`${src}?fallback=true`)
-		set_imageStyle({})
-	}, [src])
+  useUpdateEffect((): void => {
+    set_imageSrc(`${src}?fallback=true`)
+    set_imageStyle({})
+  }, [src])
 
-	return (
-		<Image
-			alt={alt}
-			src={imageSrc}
-			style={imageStyle}
-			loading={'eager'}
-			onError={(): void => {
-				performBatchedUpdates((): void => {
-					set_imageSrc('/placeholder.png')
-					set_imageStyle({filter: 'opacity(0.2)'})
-				})
-			}}
-			{...rest}
-		/>
-	)
+  return (
+    <Image
+      alt={alt}
+      src={imageSrc}
+      style={imageStyle}
+      loading={'eager'}
+      onError={(): void => {
+        performBatchedUpdates((): void => {
+          set_imageSrc('/placeholder.png')
+          set_imageStyle({filter: 'opacity(0.2)'})
+        })
+      }}
+      {...rest}
+    />
+  )
 }
 
 export { ImageWithFallback }

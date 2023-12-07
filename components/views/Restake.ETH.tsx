@@ -20,15 +20,15 @@ const ViewRestakeETH = () => {
   const [ amount, setAmount ] = useState<TNormalizedBN>(toNormalizedBN(0))
 
   const onChangeAmount = useCallback((amount: TNormalizedBN): void => {
-		setAmount(amount)
+    setAmount(amount)
 
-		// performBatchedUpdates((): void => {
-		// 	set_amount(newAmount);
-		// });
-	}, [amount])
+    // performBatchedUpdates((): void => {
+    // 	set_amount(newAmount);
+    // });
+  }, [amount])
 
 
-// ? ****************************************************** DEBUGGING ******************************************************
+  // ? ************************ DEBUGGING ************************ 
   useEffect(() => {
     console.log('amount -->', amount)
     console.log('balanceETH -->', balanceETH)
@@ -36,18 +36,18 @@ const ViewRestakeETH = () => {
 
   return (
     <>
-			<div className={'pt-4'}>
-				<div className={'mt-5 grid gap-5'}>
+      <div className={'pt-4'}>
+        <div className={'mt-5 grid gap-5'}>
           <RestakeETHForm
-							token={ETH_TOKEN}
-              amount={amount.raw === -1n ? toNormalizedBN(0) : amount}
-							onUpdateAmount={(amount): void => onChangeAmount(amount)}
-							isDisabled={false} />
-				</div>
-			</div>
-			<div className={'mt-10 flex justify-start'}>
-				<div className={'flex w-full flex-row space-x-4'}>
-					{/* <ButtonY
+            token={ETH_TOKEN}
+            amount={amount.raw === -1n ? toNormalizedBN(0) : amount}
+            onUpdateAmount={(amount): void => onChangeAmount(amount)}
+            isDisabled={false} />
+        </div>
+      </div>
+      <div className={'mt-10 flex justify-start'}>
+        <div className={'flex w-full flex-row space-x-4'}>
+          {/* <ButtonY
 						onClick={async (): Promise<void> => (
 							!shouldApproveDeposit ? onApprove(
 								toAddress(process.env.POOL_ADDRESS),
@@ -61,9 +61,9 @@ const ViewRestakeETH = () => {
 						className={'w-full md:w-[184px]'}>
 						{shouldApproveDeposit ? 'Approve for Deposit' : 'Deposit'}
 					</ButtonY> */}
-				</div>
-			</div>
-		</>
+        </div>
+      </div>
+    </>
   )
 }
 

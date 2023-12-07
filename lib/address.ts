@@ -6,8 +6,8 @@ import type { TAddress, TAddressLike, TAddressYN } from '@/types/index'
 export const zeroAddress = wZeroAddress as TAddress
 
 export function isTAddress(address?: string | null): address is TAddress {
-	const regex = /^0x([0-9a-f][0-9a-f])*$/i;
-	return !!address && regex.test(address);
+  const regex = /^0x([0-9a-f][0-9a-f])*$/i
+  return !!address && regex.test(address)
 }
 
 /* - YieldNest ******************************************************
@@ -17,17 +17,17 @@ export function isTAddress(address?: string | null): address is TAddress {
 ** should always be called by toAddress(0x...).
 **************************************************************************/
 function checksumAddress(address?: string | null | undefined): TAddressYN {
-	try {
-		if (address && isAddress(address)) {
-			const checksummedAddress = getAddress(address);
-			if (isTAddress(checksummedAddress)) {
-				return checksummedAddress as TAddressYN;
-			}
-		}
-	} catch (error) {
-		console.error(error);
-	}
-	return zeroAddress as TAddressYN;
+  try {
+    if (address && isAddress(address)) {
+      const checksummedAddress = getAddress(address)
+      if (isTAddress(checksummedAddress)) {
+        return checksummedAddress as TAddressYN
+      }
+    }
+  } catch (error) {
+    console.error(error)
+  }
+  return zeroAddress as TAddressYN
 }
 
 /* - YieldNest ******************************************************
@@ -35,10 +35,10 @@ function checksumAddress(address?: string | null | undefined): TAddressYN {
 ** version, we need to convert it between types, and the other way around.
 **************************************************************************/
 export function toAddress(address?: TAddressLike | null): TAddress {
-	if (!address) {
-		return wZeroAddress;
-	}
-	return getAddress(checksumAddress(address)?.valueOf())
+  if (!address) {
+    return wZeroAddress
+  }
+  return getAddress(checksumAddress(address)?.valueOf())
 }
 
 /* - YieldNest  ******************************************************
@@ -47,21 +47,21 @@ export function toAddress(address?: TAddressLike | null): TAddress {
 ** will be truncated to 0x1234...5678
 **************************************************************************/
 export function truncateHex(address: string | undefined, size: number): string {
-	if (address !== undefined) {
-		if (size === 0) {
-			return address;
-		}
-		return `${address.slice(0, size)}...${address.slice(-size)}`;
-	}
-	if (size === 0) {
-		return zeroAddress;
-	}
-	return '0x000...0000';
+  if (address !== undefined) {
+    if (size === 0) {
+      return address
+    }
+    return `${address.slice(0, size)}...${address.slice(-size)}`
+  }
+  if (size === 0) {
+    return zeroAddress
+  }
+  return '0x000...0000'
 }
 
 /* - YieldNest ******************************************************
 ** isZeroAddress is used to check if an address is the zero address.
 **************************************************************************/
 export function isZeroAddress(address?: string): boolean {
-	return toAddress(address) === toAddress(zeroAddress);
+  return toAddress(address) === toAddress(zeroAddress)
 }

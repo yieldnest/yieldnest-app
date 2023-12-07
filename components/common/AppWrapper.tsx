@@ -8,13 +8,13 @@ import type { ReactElement } from 'react'
 
 function	AppWrapper({ children }: {children: ReactNode }): ReactElement {
 
-	return (
-		<div>
-			<Header />
+  return (
+    <div>
+      <Header />
       {children}
       <Footer />
-		</div>
-	);
+    </div>
+  )
 }
 
 export default AppWrapper
