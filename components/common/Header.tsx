@@ -29,6 +29,10 @@ import type { ReactElement } from 'react'
 import type { Chain } from 'wagmi'
 type TNetwork = {value: number, label: string}
 
+/**
+ * NetworkButton is a component that displays the current network label.
+ * It also triggers a tooltip on hover, and the tooltip content changes based on the chain.
+ */
 function NetworkButton({label, onClick, chain}: {
 	label: string,
   chain?: number,
@@ -56,6 +60,9 @@ function NetworkButton({label, onClick, chain}: {
   )
 }
 
+/**
+ * NetworkSelector is a component that allows the user to switch between different blockchain networks.
+ */
 export function NetworkSelector({networks}: {networks: number[]}): ReactElement {
   const { onSwitchChain } = useWeb3()
   const { connectors } = useConnect()
@@ -86,19 +93,22 @@ export function NetworkSelector({networks}: {networks: number[]}): ReactElement 
           <NetworkButton
             label={supportedNetworks[0]?.label}
             chain={chain?.id}
-            // connected={isConnected} 
           />
           :
           <NetworkButton
             label={'Switch to Goerli'}
             chain={chain?.id}
-            // connected={isConnected}
             onClick={(): void => onSwitchChain(supportedNetworks[0].value)} />
       }
     </div>
   )
 }
 
+/**
+ * WalletSelector is a component that allows the user to select and manage their blockchain wallet.
+ * It provides functionalities such as displaying the wallet identity, 
+ * and handling the connection and disconnection of the wallet.
+ */
 function	WalletSelector(): ReactElement {
   const { openAccountModal } = useAccountModal()
   const { openChainModal } = useChainModal()
@@ -149,6 +159,11 @@ function	WalletSelector(): ReactElement {
   )
 }
 
+/**
+ * Header is a functional component that returns a header element.
+ * The header contains a mobile menu, logo, navigation links, network selector, and wallet selector.
+ * It also listens for a scroll event and changes its style based on the scroll position.
+ */
 const Header = () => {
 
   const [isScrolled, setIsScrolled] = useState(false)

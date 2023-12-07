@@ -21,10 +21,6 @@ const ViewRestakeETH = () => {
 
   const onChangeAmount = useCallback((amount: TNormalizedBN): void => {
     setAmount(amount)
-
-    // performBatchedUpdates((): void => {
-    // 	set_amount(newAmount);
-    // });
   }, [amount])
 
 

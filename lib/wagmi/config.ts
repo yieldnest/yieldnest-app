@@ -12,6 +12,11 @@ import { getNetwork } from '@/lib/wagmi/utils'
 import type { FallbackTransport } from 'viem'
 import type { Chain, ChainProviderFn, Config, PublicClient, WebSocketPublicClient } from 'wagmi'
 
+/**
+ * getSupportedProviders is a function that returns an array of supported blockchain providers.
+ * It includes JSON RPC and public providers by default.
+ * If Alchemy and Infura keys are provided in the environment variables, their respective providers are also included.
+ */
 export function getSupportedProviders<TChain extends Chain = Chain>(): ChainProviderFn<TChain>[] {
   const supportedProviders = [
     jsonRpcProvider({
@@ -34,6 +39,11 @@ export function getSupportedProviders<TChain extends Chain = Chain>(): ChainProv
   return supportedProviders as unknown as ChainProviderFn<TChain>[]
 }
 
+/**
+ * getConfig is a function that creates and returns a configuration object for the application.
+ * It takes an object with chains, publicClient, and webSocketPublicClient as parameters.
+ * The configuration object includes storage, autoConnect, publicClient, webSocketPublicClient, and connectors.
+ */
 export function getConfig({chains, publicClient, webSocketPublicClient}: {
 	chains: Chain[]
 	publicClient: ({chainId}: { chainId?: number | undefined; }) => PublicClient<FallbackTransport>

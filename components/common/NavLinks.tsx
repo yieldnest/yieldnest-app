@@ -1,5 +1,9 @@
 import Link from 'next/link'
 
+/**
+ * NavLinks is a component that displays a list of navigation links.
+ * Each link is defined by a title and a path.
+ */
 const NavLinks = () => {
 
   const menuItems = [

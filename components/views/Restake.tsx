@@ -2,9 +2,12 @@
 import { useState } from 'react'
 import ViewRestakeETH from './Restake.ETH'
 
+/**
+ * ViewRestake is a high level form component that allows users to restake their tokens.
+ * It supports restaking of ETH tokens with support for other tokens coming soon.
+ */
 const ViewRestake = ({ type }: { type: 'ETH' }) => {
   const [shouldRestakeEth] = useState<boolean>(type === 'ETH')
-
 
   return (
     <section className={'w-full'}>

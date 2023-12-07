@@ -17,6 +17,11 @@ Pick<PublicClientConfig, 'batch' | 'pollingInterval'> & {
 	stallTimeout?: number
 }
 
+/**
+ * `configureChains` is a function that configures the chains for the application.
+ * It takes in default chains, providers and a configuration object.
+ * It returns an object containing the chains, public client and web socket public client.
+ */
 export function configureChains<TChain extends Chain = Chain>(
   defaultChains: TChain[],
   providers: ChainProviderFn<TChain>[],

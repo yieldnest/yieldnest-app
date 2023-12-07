@@ -6,6 +6,11 @@ import ViewClaim from '@/components/views/Claim'
 
 import type { ReactElement } from 'react'
 
+/**
+ * This file loads the individual restaking pool page giving users the ability 
+ * to see the following information or function:
+ * Pool overview, Pool details, Restake, Unstake, Claim. 
+ */
 export default function Home() {
 
   const tabs = [
@@ -16,7 +21,9 @@ export default function Home() {
 
   const [currentTab, setCurrentTab] = useState<typeof tabs[0]>(tabs[0])
 
-
+  /**
+   * renderTab function returns the corresponding view based on the currentTab value.
+   */
   function renderTab(): ReactElement {
     switch (currentTab.value) {
     case 0:

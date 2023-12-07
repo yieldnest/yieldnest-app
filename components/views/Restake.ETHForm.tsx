@@ -14,7 +14,9 @@ import type { TNormalizedBN } from '@/lib/format.bigNumber'
 import type { TTokenInfo } from '@/types/index'
 import type { ChangeEvent, ReactElement } from 'react'
 
-
+/**
+ * This form base form for the restake view. This is where you can edit inputs and form styling.
+ */
 const RestakeETHForm = ({ token, amount, onUpdateAmount, isDisabled}: {
   token: TTokenInfo,
 	amount: TNormalizedBN,
@@ -34,6 +36,13 @@ const RestakeETHForm = ({ token, amount, onUpdateAmount, isDisabled}: {
     return toNormalizedBN((balance?.raw || 0) || 0)
   }, [balance])
 
+  // The onChangeAmount function handles the change of the input value for the amount to be restaked.
+  // It ensures that the new amount does not exceed the user's balance.
+  // If the user is not active, it simply updates the amount.
+  // If the new amount is greater than the user's balance, it sets the input value to the user's 
+  // balance and updates the amount to the user's balance.
+  // Otherwise, it simply updates the amount to the new amount.
+  // ! Later on, we will change this to allow the user to input balances greater than their own and display an error.
   const onChangeAmount = useCallback((e: ChangeEvent<HTMLInputElement>): void => {
     const element = document.getElementById('amountToSend') as HTMLInputElement
     const newAmount = handleInputChangeEventValue(e, token?.decimals || 18)

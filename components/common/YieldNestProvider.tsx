@@ -5,9 +5,12 @@ import AppWrapper from '@/components/common/AppWrapper'
 import { RootContext } from '@/contexts/RootContext'
 
 
-import { mainnet, goerli } from 'wagmi/chains'
+import { goerli } from 'wagmi/chains'
 
-
+/**
+ * YieldNestProvider is a component that wraps the application with necessary context providers.
+ * It also includes the main application wrapper.
+ */
 const YieldNestProvider = ({ children }: {children: ReactNode }) => {
 
   return (

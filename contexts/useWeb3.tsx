@@ -15,6 +15,8 @@ import type { FallbackTransport } from 'viem'
 import type { Config, PublicClient, WebSocketPublicClient, Chain } from 'wagmi'
 import type { TWeb3Context } from '@/types/contexts'
 
+// defaultState is used to initialize the state of the Web3Context. 
+// It contains default values for various properties related to the Web3 context.
 const defaultState = {
   address: undefined,
   ens: undefined,
@@ -35,6 +37,8 @@ const defaultState = {
   onDesactivate: (): void => undefined
 }
 
+// Web3ContextAppWrapper provides hooks and state for connecting to a wallet, 
+// switching networks, and handling account information.
 const Web3Context = createContext<TWeb3Context>(defaultState)
 export const Web3ContextAppWrapper = ({children}: {children: ReactElement}): ReactElement => {
   const {address, isConnecting, isConnected, isDisconnected, connector} = useAccount()
@@ -78,6 +82,7 @@ export const Web3ContextAppWrapper = ({children}: {children: ReactElement}): Rea
     disconnect()
   }, [disconnect])
 
+  // onSwitchChain is a function that changes the current blockchain network ID
   const	onSwitchChain = useCallback((newChainID: number): void => {
     set_currentChainID(newChainID)
     if (isConnected) {
@@ -123,6 +128,7 @@ export const Web3ContextAppWrapper = ({children}: {children: ReactElement}): Rea
     </Web3Context.Provider>
   )
 }
+
 
 export const Web3ContextApp = ({children, supportedChains}: {
 	children: ReactElement,

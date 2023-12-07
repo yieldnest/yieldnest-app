@@ -4,6 +4,9 @@ import { ETH_TOKEN } from '@/lib/tokens'
 
 import type { TIndexedTokenInfo } from '@/types/index'
 
+// This file contains constants used throughout the application. 
+// It includes addresses for various tokens and other numerical constants.
+
 export const MULTICALL3_ADDRESS = toAddress('0xcA11bde05977b3631167028862bE2a173976CA11')
 
 // Various tokens that are used in the app

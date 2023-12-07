@@ -6,6 +6,10 @@ import { performBatchedUpdates } from '@/lib/performBatchedUpdates'
 import type { ImageProps } from 'next/image'
 import type { CSSProperties, ReactElement } from 'react'
 
+/**
+ * ImageWithFallback is a component that displays an image with a specified source.
+ * If the image fails to load, it falls back to a placeholder image.
+ */
 function	ImageWithFallback(props: ImageProps): ReactElement {
   const {alt, src, ...rest} = props
   const [imageSrc, set_imageSrc] = useState(`${src}?fallback=true`)
