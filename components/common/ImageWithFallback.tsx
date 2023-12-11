@@ -12,12 +12,13 @@ import type { CSSProperties, ReactElement } from 'react'
  */
 function	ImageWithFallback(props: ImageProps): ReactElement {
   const {alt, src, ...rest} = props
-  const [imageSrc, set_imageSrc] = useState(`${src}?fallback=true`)
-  const [imageStyle, set_imageStyle] = useState<CSSProperties>({})
+  const [imageSrc, setImageSrc] = useState(`${src}?fallback=true`)
+  const [imageStyle, setImageStyle] = useState<CSSProperties>({})
+
 
   useUpdateEffect((): void => {
-    set_imageSrc(`${src}?fallback=true`)
-    set_imageStyle({})
+    setImageSrc(`${src}?fallback=true`)
+    setImageStyle({})
   }, [src])
 
   return (
@@ -28,8 +29,8 @@ function	ImageWithFallback(props: ImageProps): ReactElement {
       loading={'eager'}
       onError={(): void => {
         performBatchedUpdates((): void => {
-          set_imageSrc('/placeholder.png')
-          set_imageStyle({filter: 'opacity(0.2)'})
+          setImageSrc('/placeholder.png')
+          setImageStyle({filter: 'opacity(0.2)'})
         })
       }}
       {...rest}
