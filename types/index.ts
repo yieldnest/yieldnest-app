@@ -6,7 +6,7 @@ export type TAddress = TAddressWagmi;
 export type TAddressLike = TAddressYN | TAddressWagmi | string;
 
 export type TIndexedTokenInfo = TTokenInfo & {index: number};
-
+export type TTokenInfoArray = TTokenInfo[]
 export type TTokenInfo = {
 	chainId: number,
 	address: TAddress,
