@@ -90,7 +90,10 @@ export function isZeroAddress(address?: string): boolean {
   return toAddress(address) === toAddress(zeroAddress)
 }
 
-
+/**
+ * Asserts that the provided address is valid and not empty, and performs
+ *  additional checks for specific address conditions.
+ */
 export function assertAddress(addr: string | TAddress | undefined, name?: string): asserts addr is TAddress {
   assert(addr, `${name || 'Address'} is not set`)
   assert(isTAddress(addr), `${name || 'Address'} provided is invalid`)
