@@ -1,5 +1,5 @@
 
-import { useState, useCallback, useEffect, useMemo } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { useWeb3 } from '@/contexts/useWeb3'
 import { useBalance } from 'wagmi'
 import { handleInputChangeEventValue } from '@/lib/helpers'
@@ -9,32 +9,43 @@ import { ImageWithFallback } from '@/components/common/ImageWithFallback'
 
 import { cn } from '@/lib/cn'
 import { ArrowDown } from 'lucide-react'
-
 import type { TNormalizedBN } from '@/lib/format.bigNumber'
-import type { TTokenInfo } from '@/types/index'
+import type { TTokenInfoArray } from '@/types/index'
 import type { ChangeEvent, ReactElement } from 'react'
 
 /**
  * This form base form for the restake view. This is where you can edit inputs and form styling.
  */
-const RestakeETHForm = ({ token, amount, onUpdateAmount, isDisabled}: {
-  token: TTokenInfo,
+const RestakeETHForm = ({ tokens, amount, onUpdateAmount, isDisabled}: {
+  tokens: TTokenInfoArray,
 	amount: TNormalizedBN,
 	onUpdateAmount: (amount: TNormalizedBN) => void,
 	isDisabled: boolean
 }): ReactElement => {
   // ! Hooks
   const { isActive, address } = useWeb3()
-  const { data: balanceETH, isError, isLoading } = useBalance({
+  const { data: balanceETH } = useBalance({
     address: address,
+    watch: true
+  })
+  const { data: balanceYNETH } = useBalance({
+    address: address,
+    token: tokens[1].address,
+    watch: true
   })
 
   // ! State
-  const [ balance, setBalance ] = useState(balanceETH ? toNormalizedBN(balanceETH.value) : toNormalizedBN(0))
+  const [balance, setBalance] = useState<[TNormalizedBN, TNormalizedBN]>([toNormalizedBN(0), toNormalizedBN(0)])
 
-  const balanceOf = useMemo((): TNormalizedBN => {
-    return toNormalizedBN((balance?.raw || 0) || 0)
-  }, [balance])
+  // Updates the balance when the balanceETH or balanceYNETH changes.
+  useEffect(() => {
+    if (balanceETH) {
+      setBalance((prevBalance) => [toNormalizedBN(balanceETH.value), prevBalance[1]])
+    }
+    if (balanceYNETH) {
+      setBalance((prevBalance) => [prevBalance[0], toNormalizedBN(balanceYNETH.value)])
+    }
+  }, [balanceETH, balanceYNETH])
 
   // The onChangeAmount function handles the change of the input value for the amount to be restaked.
   // It ensures that the new amount does not exceed the user's balance.
@@ -45,25 +56,22 @@ const RestakeETHForm = ({ token, amount, onUpdateAmount, isDisabled}: {
   // ! Later on, we will change this to allow the user to input balances greater than their own and display an error.
   const onChangeAmount = useCallback((e: ChangeEvent<HTMLInputElement>): void => {
     const element = document.getElementById('amountToSend') as HTMLInputElement
-    const newAmount = handleInputChangeEventValue(e, token?.decimals || 18)
-    console.log('newAmount', newAmount)
+    const newAmount = handleInputChangeEventValue(e, tokens[0]?.decimals || 18)
     if (!isActive) {
       return onUpdateAmount(newAmount)
     }
-    if (newAmount.raw > balance?.raw) {
+    if (newAmount.raw > balance[0]?.raw) {
       if (element?.value) {
-        element.value = formatAmount(balance?.normalized, 0, 18)
+        element.value = formatAmount(balance[0]?.normalized, 0, 18)
       }
-      return onUpdateAmount(toNormalizedBN(balance?.raw || 0))
+      return onUpdateAmount(toNormalizedBN(balance[0]?.raw || 0))
     }
     onUpdateAmount(newAmount)
-  }, [isActive, onUpdateAmount, token?.decimals])
+  }, [isActive, onUpdateAmount, tokens[0]?.decimals])
 
-  useEffect(() => {
-    console.log('token -->', token)
-    console.log('balanceETH -->', balanceETH)
-    console.log('balance -->', balance)
-  }, [token, balanceETH])
+  // useEffect(() => {
+  //   console.log('balanceLoading -->', balanceLoading)
+  // }, [ balanceLoading])
 
   return (
     <section className='w-full'>
@@ -75,21 +83,21 @@ const RestakeETHForm = ({ token, amount, onUpdateAmount, isDisabled}: {
             inputMode={'numeric'}
             min={0}
             maxLength={20}
-            step={1 / 10 ** (token?.decimals || 18)}
-            max={balanceOf?.normalized || 0}
+            step={1 / 10 ** (tokens[0]?.decimals || 18)}
+            max={balance[0]?.normalized || 0}
             placeholder={'0.000000'}
             value={amount?.normalized || ''}
             onChange={onChangeAmount}
           />
           <div className={'flex items-center justify-between border border-border rounded-lg gap-2 p-2'}>
             <p className='pr-2'>
-              {token.symbol}
+              {tokens[0].symbol}
             </p>
             <div className='h-6 w-6 flex items-center justify-center'>
               <ImageWithFallback
-                alt={token.name}
+                alt={tokens[0].name}
                 unoptimized
-                src={token.logoURI}
+                src={tokens[0].logoURI}
                 width={24}
                 height={24} />
             </div>
@@ -100,12 +108,12 @@ const RestakeETHForm = ({ token, amount, onUpdateAmount, isDisabled}: {
           <p
             suppressHydrationWarning
             className={'pl-2 pt-1 text-xs text-foreground'}>
-            {`You have ${formatAmount(balance?.normalized || 0, 2, 6)} ${token.symbol}`}
+            {`You have ${formatAmount(balance[0].normalized || 0, 2, 6)} ${tokens[0].symbol}`}
           </p>
           <button
             type={'button'}
             tabIndex={-1}
-            onClick={(): void => onUpdateAmount(balanceOf)}
+            onClick={(): void => onUpdateAmount(balance[0])}
             className={cn(`px-2 py-1 text-sm rounded-md border border-border transition-colors text-secondary 
             hover:bg-background`, isDisabled ? 'opacity-0 pointer-events-none' : '')}>
             {'Max'}
@@ -113,7 +121,7 @@ const RestakeETHForm = ({ token, amount, onUpdateAmount, isDisabled}: {
         </div>
       </form>
       <div className='flex justify-center items center'>
-        <ArrowDown className='h-12 w-12 text-accent' />
+        <ArrowDown className='h-12 w-12 text-primary' />
       </div>
       {/* Output section */}
       <div className={cn('flex w-full flex-col gap-4 rounded-md p-4 bg-background')}>
@@ -125,16 +133,15 @@ const RestakeETHForm = ({ token, amount, onUpdateAmount, isDisabled}: {
           </div>
           <div className={'flex items-center justify-between border border-border rounded-lg gap-2 p-2'}>
             <p className='pr-2'>
-              ynETH
-              {/* {token.symbol} */}
+              {tokens[1].symbol}
             </p>
             <div className='h-6 w-6 flex items-center justify-center'>
-              {/* <ImageWithFallback
-                alt={token.name}
+              <ImageWithFallback
+                alt={tokens[1].name}
                 unoptimized
-                src={token.logoURI}
+                src={'/yn-icon.svg'}
                 width={24}
-                height={24} /> */}
+                height={24} />
             </div>
           </div>
         </div>
@@ -142,8 +149,7 @@ const RestakeETHForm = ({ token, amount, onUpdateAmount, isDisabled}: {
           <p
             suppressHydrationWarning
             className={'pl-2 pt-1 text-xs text-foreground'}>
-              Receive 0.00 ynETH
-            {/* {`Receive ${formatAmount(balanceOf?.normalized || 0, 2, 6)} ${token.symbol}`} */}
+            {`You have ${formatAmount(balance[1]?.normalized || 0, 2, 6)} ${tokens[1].symbol}`}
           </p>
         </div>
       </div>

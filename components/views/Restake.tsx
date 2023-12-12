@@ -1,4 +1,3 @@
-
 import { useState } from 'react'
 import ViewRestakeETH from './Restake.ETH'
 
@@ -18,14 +17,15 @@ const ViewRestake = ({ type }: { type: 'ETH' }) => {
               <h2 className={'text-xl font-bold'}>
                 {`Restake ${type}`}
               </h2>
-              {/* <SettingsPopover /> */}
             </div>
             {/* --------ViewRestakeToken will be added later when more staking pools are created--------  */}
             {/*  {!shouldStakeEth && (
 							<ViewRestakeToken />
 						)} */}
             {shouldRestakeEth && (
-              <ViewRestakeETH />
+              <ViewRestakeETH
+                type={type}
+              />
             )}
           </div>
         </div>
