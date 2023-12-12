@@ -1,5 +1,4 @@
 import { toAddress } from '@/lib/address'
-
 import type { TTokenInfo } from '@/types/index'
 
 export const ETH_TOKEN: TTokenInfo = {
@@ -22,11 +21,11 @@ export const STETH_TOKEN: TTokenInfo ={
   logoURI: 'https://assets.smold.app/api/token/1/0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84/logo-128.png'
 }
 
-export const RETH_TOKEN: TTokenInfo ={
+export const YNETH_TOKEN: TTokenInfo ={
   chainId: 5,
-  address: toAddress('0x178E141a0E3b34152f73Ff610437A7bf9B83267A'),
-  name: 'Rocket Pool ETH',
-  symbol: 'rETH',
+  address: toAddress('0x096bcB45b3BB89b33d0DDCf92508Fe54f9b25Af1'),
+  name: 'YieldNest ETH',
+  symbol: 'ynETH',
   decimals: 18,
-  logoURI: 'https://assets.smold.app/api/token/1/0xae78736Cd615f374D3085123A210448E74Fc6393/logo-128.png'
+  logoURI: 'https://assets.smold.app/api/token/1/0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84/logo-128.png'
 }
