@@ -81,14 +81,13 @@ const RestakeETHForm = ({ tokens, amount, onUpdateAmount, isDisabled}: {
       }
       return onUpdateAmount(toNormalizedBN(balance[0]?.raw || 0))
     }
-    // delayedAmount is used to smooth out the ynETHestimator read contract call.
-    setDelayedAmount(newAmount)
     onUpdateAmount(newAmount)
   }, [isActive, onUpdateAmount, tokens[0]?.decimals])
 
-  // useEffect(() => {
-    
-  // }, [ ])
+  useEffect(() => {
+    // delayedAmount is used to smooth out the ynETHestimator read contract call.
+    setDelayedAmount(amount)
+  }, [amount])
 
   return (
     <section className='w-full'>
