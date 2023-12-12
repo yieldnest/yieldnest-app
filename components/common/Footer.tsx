@@ -20,7 +20,7 @@ const Footer = () => {
             <Link href='https://discord.gg/ayAZuQgFaE' rel="noopener noreferrer" target="_blank">
               <p>Discord</p>
             </Link>
-            <Link href='https://twitter.com/yieldnest_defi' rel="noopener noreferrer" target="_blank">
+            <Link href='https://twitter.com/YieldNestFi' rel="noopener noreferrer" target="_blank">
               <p>Twitter</p>
             </Link>
             <Link href='https://t.me/YieldNest' rel="noopener noreferrer" target="_blank">
