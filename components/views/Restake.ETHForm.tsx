@@ -1,14 +1,16 @@
 
 import { useState, useCallback, useEffect } from 'react'
 import { useWeb3 } from '@/contexts/useWeb3'
-import { useBalance } from 'wagmi'
+import { useBalance, useContractRead } from 'wagmi'
 import { handleInputChangeEventValue } from '@/lib/helpers'
 import { toNormalizedBN } from '@/lib/format.bigNumber'
 import { formatAmount } from '@/lib/format.number'
+import { toAddress } from '@/lib/address'
 import { ImageWithFallback } from '@/components/common/ImageWithFallback'
-
+import { useDebouncedState } from '@react-hookz/web'
+import YNETH_ABI from '@/lib/abi/ynETH.abi'
 import { cn } from '@/lib/cn'
-import { ArrowDown } from 'lucide-react'
+import { ArrowDown, Loader } from 'lucide-react'
 import type { TNormalizedBN } from '@/lib/format.bigNumber'
 import type { TTokenInfoArray } from '@/types/index'
 import type { ChangeEvent, ReactElement } from 'react'
@@ -22,6 +24,13 @@ const RestakeETHForm = ({ tokens, amount, onUpdateAmount, isDisabled}: {
 	onUpdateAmount: (amount: TNormalizedBN) => void,
 	isDisabled: boolean
 }): ReactElement => {
+
+  // ! State
+  // balance is used to set a the user's token balance to a standard format, which is used to display in the form.
+  const [ balance, setBalance ] = useState<[TNormalizedBN, TNormalizedBN]>([toNormalizedBN(0), toNormalizedBN(0)])
+  // delayedAmount is used to smooth out the ynETHestimator read contract call and display the output in the form.
+  const [ delayedAmount, setDelayedAmount ] = useDebouncedState(toNormalizedBN(0), 500, 1000)
+
   // ! Hooks
   const { isActive, address } = useWeb3()
   const { data: balanceETH } = useBalance({
@@ -34,8 +43,14 @@ const RestakeETHForm = ({ tokens, amount, onUpdateAmount, isDisabled}: {
     watch: true
   })
 
-  // ! State
-  const [balance, setBalance] = useState<[TNormalizedBN, TNormalizedBN]>([toNormalizedBN(0), toNormalizedBN(0)])
+  // Gets the estimated ynETH amount to be received from the restake.
+  const { data: ynETHestimator, isLoading: loadingEstimator } = useContractRead({
+    address: toAddress(process.env.NEXT_PUBLIC_YNETH_ADDRESS),
+    abi: YNETH_ABI,
+    functionName: 'ethToynETH',
+    args: [delayedAmount.raw],
+    enabled: isActive
+  })
 
   // Updates the balance when the balanceETH or balanceYNETH changes.
   useEffect(() => {
@@ -66,12 +81,14 @@ const RestakeETHForm = ({ tokens, amount, onUpdateAmount, isDisabled}: {
       }
       return onUpdateAmount(toNormalizedBN(balance[0]?.raw || 0))
     }
+    // delayedAmount is used to smooth out the ynETHestimator read contract call.
+    setDelayedAmount(newAmount)
     onUpdateAmount(newAmount)
   }, [isActive, onUpdateAmount, tokens[0]?.decimals])
 
   // useEffect(() => {
-  //   console.log('balanceLoading -->', balanceLoading)
-  // }, [ balanceLoading])
+    
+  // }, [ ])
 
   return (
     <section className='w-full'>
@@ -120,15 +137,19 @@ const RestakeETHForm = ({ tokens, amount, onUpdateAmount, isDisabled}: {
           </button>
         </div>
       </form>
-      <div className='flex justify-center items center'>
-        <ArrowDown className='h-12 w-12 text-primary' />
+      <div className='flex justify-center items center relative py-2'>
+        <ArrowDown className='absolute -top-2 h-8 w-8 bg-secondary/30 text-background rounded-md' />
       </div>
       {/* Output section */}
       <div className={cn('flex w-full flex-col gap-4 rounded-md p-4 bg-background')}>
         <div className='flex justify-between items-center'>
           <div>
             <p className='w-full pl-2 overflow-x-scroll border-none bg-background px-0 outline-none text-xl'>
-              0.00
+              {loadingEstimator ? 
+                <Loader className={'h-6 w-6 animate-spin-slow '} /> 
+                :
+                ynETHestimator && !loadingEstimator ? 
+                  formatAmount(toNormalizedBN(ynETHestimator).normalized, 2, 6) : '0.00'}
             </p>
           </div>
           <div className={'flex items-center justify-between border border-border rounded-lg gap-2 p-2'}>
