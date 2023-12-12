@@ -2,13 +2,14 @@ import { useState, useCallback, useEffect, useMemo, ReactNode } from 'react'
 import Link from 'next/link'
 import assert from 'assert'
 import { useWeb3 } from '@/contexts/useWeb3'
-import { useBalance } from 'wagmi'
+import { useBalance, useWalletClient } from 'wagmi'
 import { toNormalizedBN } from '@/lib/format.bigNumber'
 import { ETH_TOKEN, YNETH_TOKEN } from '@/lib/tokens'
 import { toAddress } from '@/lib/address'
 import { depositETH } from '@/lib/actions'
 import { defaultTxStatus } from '@/lib/wagmi/provider'
 import { ButtonTx } from '@/components/ui/ButtonTx'
+import { Button } from '@/components/ui/button'
 import { ExternalLink } from 'lucide-react'
 import RestakeETHForm from './Restake.ETHForm'
 
@@ -30,6 +31,8 @@ const ViewRestakeETH = ({ type }: { type: string }) => {
     address: address,
     watch: true,
   })
+  const { data: walletClient, isError, isLoading } = useWalletClient()
+
 
   const [ balance, setBalance ] = useState(toNormalizedBN(0))
   const [ amount, setAmount ] = useState<TNormalizedBN>(toNormalizedBN(0))
@@ -74,12 +77,22 @@ const ViewRestakeETH = ({ type }: { type: string }) => {
     if (result.isSuccessful) {
       setAmount(toNormalizedBN(0))
       setTxResultMessage(
-        <div className='flex mt-2 items-center'>
-          <p className=''>Transaction Successful! View Tx</p>
-          <Link href={`https://goerli.etherscan.io/tx/${result?.receipt?.transactionHash}`} rel="noopener noreferrer" target="_blank">
-            <ExternalLink className='h-6 w-6 ml-2 text-primary hover:text-accent'/>
-          </Link>       
-        </div>
+        <>
+          <div className='flex mt-2 items-center justify-center'>
+            <p className=''>Transaction Successful! View Tx</p>
+            <Link href={`https://goerli.etherscan.io/tx/${result?.receipt?.transactionHash}`} rel="noopener noreferrer" target="_blank">
+              <ExternalLink className='h-6 w-6 ml-2 text-primary hover:text-accent'/>
+            </Link>       
+          </div>
+          <div className='flex mt-2 items-center justify-center'>
+            <Button
+              className='bg-primary/60'
+              onClick={addTokenToWallet}
+            >
+              Add ynETH to Wallet
+            </Button>
+          </div>
+        </>
       )
     } else {
       setTxResultMessage(<p className='text-sm text-red-500'>{result?.error?.details}</p>)}
@@ -91,6 +104,28 @@ const ViewRestakeETH = ({ type }: { type: string }) => {
     // console.log('canDeposit -->', canDeposit)
     // console.log('balanceETH -->', balanceETH)
   }, [canDeposit])
+
+  // TODO: Move this to provider.ts to be reused by other tokens.
+  const addTokenToWallet = async () => {
+    const ethereumWindow: any = window
+    const wasAdded = await ethereumWindow.ethereum?.request({
+      method: 'wallet_watchAsset',
+      params: {
+        type: 'ERC20',
+        options: {
+          address: YNETH_TOKEN.address,
+          symbol: YNETH_TOKEN.symbol, 
+          decimals: YNETH_TOKEN.decimals, 
+          image: '/yn-icon.svg',
+        },
+      },
+    })
+    if (wasAdded) {
+      console.log('Thanks for your interest!')
+    } else {
+      console.log('Your loss!')
+    }
+  }
 
   return (
     <>
