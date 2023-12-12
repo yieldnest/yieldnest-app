@@ -102,7 +102,7 @@ const ViewRestakeETH = ({ type }: { type: string }) => {
             onUpdateAmount={(amount): void => onChangeAmount(amount)}
             isDisabled={false} />
         </div>
-        <div className='flex text-sm justify-between mt-4 mx-1'>
+        {/* <div className='flex text-sm justify-between mt-4 mx-1'>
           <p>
             Estimated gas fee
           </p>
@@ -110,11 +110,9 @@ const ViewRestakeETH = ({ type }: { type: string }) => {
             <p>
               0.00
             </p>
-            {/* Will add a gas fee settings option later. */}
-            {/* <Settings className={'h-4 w-4 ml-2 hover:animate-spin-slow hover:cursor-pointer'} /> */}
+            <Settings className={'h-4 w-4 ml-2 hover:animate-spin-slow hover:cursor-pointer'} />
           </div>
-          
-        </div>
+        </div> */}
       </div>
       <div className={'mt-4 flex flex-col justify-start gap-2'}>
         <div className={''}>
