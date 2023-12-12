@@ -1,7 +1,9 @@
+import assert from 'assert'
 import { getAddress, isAddress, zeroAddress as wZeroAddress } from 'viem'
+import { isEth } from '@/lib/isEth'
+import { ZERO_ADDRESS } from '@/lib/constants'
 
 import type { TAddress, TAddressLike, TAddressYN } from '@/types/index'
-
 
 export const zeroAddress = wZeroAddress as TAddress
 
@@ -86,4 +88,12 @@ export function truncateHex(address: string | undefined, size: number): string {
  */
 export function isZeroAddress(address?: string): boolean {
   return toAddress(address) === toAddress(zeroAddress)
+}
+
+
+export function assertAddress(addr: string | TAddress | undefined, name?: string): asserts addr is TAddress {
+  assert(addr, `${name || 'Address'} is not set`)
+  assert(isTAddress(addr), `${name || 'Address'} provided is invalid`)
+  assert(toAddress(addr) !== ZERO_ADDRESS, `${name || 'Address'} is 0x0`)
+  assert(!isEth(addr), `${name || 'Address'} is 0xE`)
 }
