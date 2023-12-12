@@ -29,8 +29,8 @@ function	ImageWithFallback(props: ImageProps): ReactElement {
       loading={'eager'}
       onError={(): void => {
         performBatchedUpdates((): void => {
-          setImageSrc('/placeholder.png')
-          setImageStyle({filter: 'opacity(0.2)'})
+          setImageSrc('/yn-icon.svg')
+          setImageStyle({filter: 'opacity(0.5)'})
         })
       }}
       {...rest}
