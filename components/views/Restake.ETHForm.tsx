@@ -94,7 +94,7 @@ const RestakeETHForm = ({ tokens, amount, onUpdateAmount, isDisabled}: {
       <form className={cn('flex w-full flex-col gap-4 rounded-md p-4 bg-background')}>
         <div className='flex justify-between items-center'>
           <input 
-            className={'w-full pl-2 overflow-x-scroll border-none bg-background px-0 outline-none text-xl'}
+            className='w-full pl-2 overflow-x-scroll border-none bg-background px-0 outline-none text-xl'
             type={'number'}
             inputMode={'numeric'}
             min={0}
@@ -105,7 +105,7 @@ const RestakeETHForm = ({ tokens, amount, onUpdateAmount, isDisabled}: {
             value={amount?.normalized || ''}
             onChange={onChangeAmount}
           />
-          <div className={'flex items-center justify-between border border-border rounded-lg gap-2 p-2'}>
+          <div className='flex items-center justify-between border border-border rounded-lg gap-2 p-2'>
             <p className='pr-2'>
               {tokens[0].symbol}
             </p>
@@ -123,7 +123,7 @@ const RestakeETHForm = ({ tokens, amount, onUpdateAmount, isDisabled}: {
         <div className='flex justify-between items-center'>
           <p
             suppressHydrationWarning
-            className={'pl-2 pt-1 text-xs text-foreground'}>
+            className='pl-2 pt-1 text-xs text-foreground'>
             {`You have ${formatAmount(balance[0].normalized || 0, 2, 6)} ${tokens[0].symbol}`}
           </p>
           <button
@@ -145,13 +145,13 @@ const RestakeETHForm = ({ tokens, amount, onUpdateAmount, isDisabled}: {
           <div>
             <p className='w-full pl-2 overflow-x-scroll border-none bg-background px-0 outline-none text-xl'>
               {loadingEstimator ? 
-                <Loader className={'h-6 w-6 animate-spin-slow '} /> 
+                <Loader className='h-6 w-6 animate-spin-slow ' /> 
                 :
                 ynETHestimator && !loadingEstimator ? 
                   formatAmount(toNormalizedBN(ynETHestimator).normalized, 2, 6) : '0.00'}
             </p>
           </div>
-          <div className={'flex items-center justify-between border border-border rounded-lg gap-2 p-2'}>
+          <div className='flex items-center justify-between border border-border rounded-lg gap-2 p-2'>
             <p className='pr-2'>
               {tokens[1].symbol}
             </p>
@@ -168,7 +168,7 @@ const RestakeETHForm = ({ tokens, amount, onUpdateAmount, isDisabled}: {
         <div>
           <p
             suppressHydrationWarning
-            className={'pl-2 pt-1 text-xs text-foreground'}>
+            className='pl-2 pt-1 text-xs text-foreground'>
             {`You have ${formatAmount(balance[1]?.normalized || 0, 2, 6)} ${tokens[1].symbol}`}
           </p>
         </div>

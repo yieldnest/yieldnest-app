@@ -32,16 +32,12 @@ export function isTAddress(address?: string | null): address is TAddress {
  */
 
 function checksumAddress(address?: string | null | undefined): TAddressYN {
-  try {
-    if (address && isAddress(address)) {
-      const checksummedAddress = getAddress(address)
-      if (isTAddress(checksummedAddress)) {
-        return checksummedAddress as TAddressYN
-      }
+  if (address && isAddress(address)) {
+    const checksummedAddress = getAddress(address)
+    if (isTAddress(checksummedAddress)) {
+      return checksummedAddress as TAddressYN
     }
-  } catch (error) {
-    console.error(error)
-  }
+  } 
   return zeroAddress as TAddressYN
 }
 
@@ -92,7 +88,7 @@ export function isZeroAddress(address?: string): boolean {
 
 /**
  * Asserts that the provided address is valid and not empty, and performs
- *  additional checks for specific address conditions.
+ * additional checks for specific address conditions.
  */
 export function assertAddress(addr: string | TAddress | undefined, name?: string): asserts addr is TAddress {
   assert(addr, `${name || 'Address'} is not set`)

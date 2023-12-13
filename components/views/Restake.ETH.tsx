@@ -31,8 +31,6 @@ const ViewRestakeETH = ({ type }: { type: string }) => {
     address: address,
     watch: true,
   })
-  const { data: walletClient, isError, isLoading } = useWalletClient()
-
 
   const [ balance, setBalance ] = useState(toNormalizedBN(0))
   const [ amount, setAmount ] = useState<TNormalizedBN>(toNormalizedBN(0))
@@ -120,17 +118,13 @@ const ViewRestakeETH = ({ type }: { type: string }) => {
         },
       },
     })
-    if (wasAdded) {
-      console.log('Thanks for your interest!')
-    } else {
-      console.log('Your loss!')
-    }
+    // TODO: Add a message to the user if the token was added or not.
   }
 
   return (
     <>
-      <div className={'pt-4'}>
-        <div className={'mt-5 grid gap-5'}>
+      <div className='pt-4'>
+        <div className='mt-5 grid gap-5'>
           <RestakeETHForm
             tokens={[ETH_TOKEN, YNETH_TOKEN]}
             amount={amount.raw === -1n ? toNormalizedBN(0) : amount}
@@ -145,19 +139,19 @@ const ViewRestakeETH = ({ type }: { type: string }) => {
             <p>
               0.00
             </p>
-            <Settings className={'h-4 w-4 ml-2 hover:animate-spin-slow hover:cursor-pointer'} />
+            <Settings className='h-4 w-4 ml-2 hover:animate-spin-slow hover:cursor-pointer' />
           </div>
         </div> */}
       </div>
-      <div className={'mt-4 flex flex-col justify-start gap-2'}>
-        <div className={''}>
+      <div className='mt-4 flex flex-col justify-start gap-2'>
+        <div >
           <ButtonTx
             onClick={async (): Promise<void> => {
               onDeposit()
             }}
             isBusy={txStatus.pending}
             isDisabled={!canDeposit || !provider}
-            className={'w-full md:w-[184px] border-2 rounded-lg px-4 py-2'}>
+            className='w-full md:w-[184px] border-2 rounded-lg px-4 py-2'>
             {txStatus.pending ? '' : 'Restake'}
           </ButtonTx>
         </div>
