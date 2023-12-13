@@ -3,12 +3,13 @@ import assert from 'assert'
 import { useAccount, useConnect, useDisconnect, useEnsName, 
   useNetwork, usePublicClient, useSwitchNetwork, useWalletClient, WagmiConfig } from 'wagmi'
 import { useConnectModal, RainbowKitProvider } from '@rainbow-me/rainbowkit'
-import { useIsMounted, useMountEffect, useUpdateEffect}  from '@react-hookz/web'
+import { useIsMounted, useUpdateEffect}  from '@react-hookz/web'
 
 import { toAddress } from '@/lib/address'
 import { getConfig, getSupportedProviders } from '@/lib/wagmi/config'
 import { configureChains } from '@/lib/wagmi/configChains'
 import { useToast } from '@/components/ui/use-toast'
+import { useAccountModal } from '@rainbow-me/rainbowkit'
 
 import type { ReactElement } from 'react'
 import type { FallbackTransport } from 'viem'
@@ -41,36 +42,42 @@ const defaultState = {
 // switching networks, and handling account information.
 const Web3Context = createContext<TWeb3Context>(defaultState)
 export const Web3ContextAppWrapper = ({children}: {children: ReactElement}): ReactElement => {
-  const {address, isConnecting, isConnected, isDisconnected, connector} = useAccount()
-  const {connectors, connectAsync} = useConnect()
-  const {disconnect} = useDisconnect()
-  const {switchNetwork} = useSwitchNetwork()
-  const {data: ensName} = useEnsName({address: address, chainId: 1})
-  const {data: walletClient} = useWalletClient()
-  const {chain} = useNetwork()
-  const [currentChainID, set_currentChainID] = useState(chain?.id)
+  const { address, isConnecting, isConnected, isDisconnected, connector } = useAccount()
+  const { connectors } = useConnect()
+  const { disconnect } = useDisconnect()
+  const { switchNetwork } = useSwitchNetwork()
+  const { data: ensName } = useEnsName({ address: address, chainId: 1 })
+  const { data: walletClient } = useWalletClient()
+  const { chain } = useNetwork()
+  const [ currentChainID, setCurrentChainID ] = useState(chain?.id)
   const publicClient = usePublicClient()
   const isMounted = useIsMounted()
   const { openConnectModal } = useConnectModal()
+  const { openAccountModal } = useAccountModal()
 
   // Toast hook
   const { toast } = useToast()
 
+  // Ensures that the Web3Context is mounted before setting the current chain ID.
   const supportedChainsID = useMemo((): number[] => {
+    // Checks if the injected connector is available.
     const injectedConnector = connectors.find((e): boolean => (e.id).toLocaleLowerCase() === 'injected')
     assert(injectedConnector, 'No injected connector found')
+    // Filters the injected connector to remove the testnet and keep the specific chains. 
+    // Currently only Goerli is supported so there is only 1 chain.
     const chainsForInjected = injectedConnector.chains
     const noTestnet = chainsForInjected.filter(({id}): boolean => id !== 1337)
     return noTestnet.map((network: Chain): number => network.id)
   }, [connectors])
 
+  // When chain updates, update the current chain ID.
+  // This is necessary to ensure that the currentChainID state is updated whenever the chain changes.
   useUpdateEffect((): void => {
-    set_currentChainID(chain?.id)
+    setCurrentChainID(chain?.id)
   }, [chain])
 
-
+  // onConnect is a function that opens the login modal when user pressed connect button.
   const onConnect = useCallback(async (): Promise<void> => {
-
     if (openConnectModal) {
       openConnectModal()
     } else {
@@ -84,23 +91,26 @@ export const Web3ContextAppWrapper = ({children}: {children: ReactElement}): Rea
 
   // onSwitchChain is a function that changes the current blockchain network ID
   const	onSwitchChain = useCallback((newChainID: number): void => {
-    set_currentChainID(newChainID)
+    // Sets the current chain ID within the Web3Context.
+    setCurrentChainID(newChainID)
     if (isConnected) {
       if (!switchNetwork) {
         console.error(new Error('Switch network function is not defined'))
       }
+      // Switches the network to the new chain ID. Prompted to accept change in wallet.
       switchNetwork?.(newChainID)
     }
   }, [switchNetwork, isConnected])
 
+  // Opens the account modal so a user can disconnect wallet or copy wallet address when a user is already connected.
+  // TODO update the account modal display more account information later on. 
   const openLoginModal = useCallback(async (): Promise<void> => {
-
-    if (openConnectModal) {
-      openConnectModal()
+    if (openAccountModal) {
+      openAccountModal?.()
     } else {
       toast({variant: 'destructive', description: 'Impossible to open login modal'})
     }
-  }, [openConnectModal])
+  }, [openAccountModal])
 
   const contextValue = {
     address: address ? toAddress(address) : undefined,

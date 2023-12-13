@@ -18,7 +18,7 @@ import {
 
 
 import assert from 'assert'
-import { useAccountModal, useChainModal } from '@rainbow-me/rainbowkit'
+import { useChainModal } from '@rainbow-me/rainbowkit'
 import { useConnect, useNetwork, useAccount } from 'wagmi'
 import { useIsMounted } from '@react-hookz/web'
 import { truncateHex } from '@/lib/address'
@@ -110,9 +110,8 @@ export function NetworkSelector({networks}: {networks: number[]}): ReactElement 
  * and handling the connection and disconnection of the wallet.
  */
 function	WalletSelector(): ReactElement {
-  const { openAccountModal } = useAccountModal()
-  const { openChainModal } = useChainModal()
-  const { isActive, address, ens, lensProtocolHandle, openLoginModal } = useWeb3()
+  // const { openChainModal } = useChainModal()
+  const { isActive, address, ens, lensProtocolHandle, openLoginModal, onConnect } = useWeb3()
   const [ walletIdentity, set_walletIdentity ] = useState<string | undefined>(undefined)
 
   useEffect((): void => {
@@ -133,11 +132,11 @@ function	WalletSelector(): ReactElement {
     <div
       onClick={(): void => {
         if (isActive) {
-          openAccountModal?.()
-        } else if (!isActive && address) {
-          openChainModal?.()
-        } else {
           openLoginModal()
+        } else if (!isActive && address) {
+          // openChainModal?.() Not currently supported
+        } else {
+          onConnect()
         }
       }}>
       <p suppressHydrationWarning className={'!text-xs md:!text-sm'}>
