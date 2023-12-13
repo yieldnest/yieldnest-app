@@ -14,9 +14,5 @@ export type TTokenInfo = {
 	symbol: string,
 	decimals: number,
 	logoURI: string,
-	extra?: {
-		totalVotes?: bigint;
-		votes?: bigint;
-		weight?: number;
-	};
+  abi?: any,
 };
