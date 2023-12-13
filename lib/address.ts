@@ -32,16 +32,12 @@ export function isTAddress(address?: string | null): address is TAddress {
  */
 
 function checksumAddress(address?: string | null | undefined): TAddressYN {
-  try {
-    if (address && isAddress(address)) {
-      const checksummedAddress = getAddress(address)
-      if (isTAddress(checksummedAddress)) {
-        return checksummedAddress as TAddressYN
-      }
+  if (address && isAddress(address)) {
+    const checksummedAddress = getAddress(address)
+    if (isTAddress(checksummedAddress)) {
+      return checksummedAddress as TAddressYN
     }
-  } catch (error) {
-    console.error(error)
-  }
+  } 
   return zeroAddress as TAddressYN
 }
 
