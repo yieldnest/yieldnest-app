@@ -47,7 +47,7 @@ export default function Home() {
         <h1>Welcome to YieldNest!</h1>
       </div>
       <div className="mx-auto my-12 flex w-full flex-col items-center justify-center bg-card rounded-xl sm:max-w-md">
-        <nav className={'flex items-center gap-4 my-4 bg-background rounded-lg md:text-lg'}>
+        <nav className='flex items-center gap-4 my-4 bg-background rounded-lg md:text-lg'>
           {tabs.map((tab): ReactElement => {
             return (
               <button
