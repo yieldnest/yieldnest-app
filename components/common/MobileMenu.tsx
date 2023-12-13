@@ -5,6 +5,10 @@ import { Menu, X } from 'lucide-react'
 import { cn } from '@/lib/cn'
 import NavLinks from './NavLinks'
 
+/**
+ * MobileMenu is a component that displays a mobile menu.
+ * It allows the user to toggle the visibility of the menu and navigate to different parts of the application.
+ */
 const MobileMenu = () => {
 
   const [isOpen, setIsOpen] = useState(false)

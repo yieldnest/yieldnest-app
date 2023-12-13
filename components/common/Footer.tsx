@@ -16,11 +16,11 @@ const Footer = () => {
         </div>
         <div className='flex gap-4'>
           <div className='flex flex-col'>
-            <h2 className='pb-2 text-secondary'>Community</h2>
+            <h2 className='pb-2 text-primary'>Community</h2>
             <Link href='https://discord.gg/ayAZuQgFaE' rel="noopener noreferrer" target="_blank">
               <p>Discord</p>
             </Link>
-            <Link href='https://twitter.com/yieldnest_defi' rel="noopener noreferrer" target="_blank">
+            <Link href='https://twitter.com/YieldNestFi' rel="noopener noreferrer" target="_blank">
               <p>Twitter</p>
             </Link>
             <Link href='https://t.me/YieldNest' rel="noopener noreferrer" target="_blank">
@@ -28,7 +28,7 @@ const Footer = () => {
             </Link>
           </div>
           <div className='flex flex-col'>
-            <h2 className='pb-2 text-secondary'>Resources</h2>
+            <h2 className='pb-2 text-primary'>Resources</h2>
             <Link href='https://docs.yieldnest.finance/' rel="noopener noreferrer" target="_blank">
               <p>Docs</p>
             </Link>
