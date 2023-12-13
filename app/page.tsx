@@ -4,7 +4,7 @@ import ViewRestake from '@/components/views/Restake'
 import ViewUnstake from '@/components/views/Unstake'
 import ViewClaim from '@/components/views/Claim'
 import PoolOverview from '@/components/views/PoolOverview'
-
+import { YNETH_TOKEN } from '@/lib/tokens'
 import type { ReactElement } from 'react'
 
 /**
@@ -44,7 +44,9 @@ export default function Home() {
 
   return (
     <main className="flex flex-col h-full items-center justify-between mt-14">
-      <PoolOverview />
+      <PoolOverview
+        token={YNETH_TOKEN}
+      />
       <div className="mx-auto my-12 flex w-full flex-col items-center justify-center bg-card rounded-xl sm:max-w-md">
         <nav className='flex items-center gap-4 my-4 bg-background rounded-lg md:text-lg'>
           {tabs.map((tab): ReactElement => {
