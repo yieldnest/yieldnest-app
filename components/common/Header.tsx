@@ -1,7 +1,7 @@
 'use client'
 import Link from 'next/link'
 import Image from 'next/image'
-import { useState, useEffect, useMemo, use } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { cn } from '@/lib/cn'
 
 import MobileMenu from './MobileMenu'
@@ -168,6 +168,9 @@ const Header = () => {
 
   const [isScrolled, setIsScrolled] = useState(false)
 
+  // handleScroll function listens for a scroll event and changes the isScrolled state based on the scroll position.
+  // The isScrolled state is used to change the style of the header when the user scrolls.
+  // Header style updates with a border bottom and some opacity.
   useEffect(() => {
     const handleScroll = () => {
       // Adjust the value '50' based on when you want the navbar to change its style
