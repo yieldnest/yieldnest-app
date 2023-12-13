@@ -1,6 +1,5 @@
 import { toAddress } from '@/lib/address'
 import type { TTokenInfo } from '@/types/index'
-import YNETH_ABI from '@/lib/abi/ynETH.abi'
 import { erc20ABI } from '@wagmi/core'
 
 export const ETH_TOKEN: TTokenInfo = {
@@ -31,5 +30,5 @@ export const YNETH_TOKEN: TTokenInfo ={
   symbol: 'ynETH',
   decimals: 18,
   logoURI: 'https://assets.smold.app/api/token/1/0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84/logo-128.png',
-  abi: YNETH_ABI
+  abi: erc20ABI
 }
