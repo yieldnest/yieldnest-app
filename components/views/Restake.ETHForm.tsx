@@ -8,7 +8,7 @@ import { formatAmount } from '@/lib/format.number'
 import { toAddress } from '@/lib/address'
 import { ImageWithFallback } from '@/components/common/ImageWithFallback'
 import { useDebouncedState } from '@react-hookz/web'
-import YNETH_ABI from '@/lib/abi/ynETH.abi'
+import YNETH_POOL_ABI from '@/lib/abi/ynETHPool.abi'
 import { cn } from '@/lib/cn'
 import { ArrowDown, Loader } from 'lucide-react'
 import type { TNormalizedBN } from '@/lib/format.bigNumber'
@@ -46,7 +46,7 @@ const RestakeETHForm = ({ tokens, amount, onUpdateAmount, isDisabled}: {
   // Gets the estimated ynETH amount to be received from the restake.
   const { data: ynETHestimator, isLoading: loadingEstimator } = useContractRead({
     address: toAddress(process.env.NEXT_PUBLIC_YNETH_ADDRESS),
-    abi: YNETH_ABI,
+    abi: YNETH_POOL_ABI,
     functionName: 'ethToynETH',
     args: [delayedAmount.raw],
     enabled: isActive
