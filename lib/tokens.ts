@@ -1,5 +1,7 @@
 import { toAddress } from '@/lib/address'
 import type { TTokenInfo } from '@/types/index'
+import YNETH_ABI from '@/lib/abi/ynETH.abi'
+import { erc20ABI } from '@wagmi/core'
 
 export const ETH_TOKEN: TTokenInfo = {
   address: toAddress('0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'),
@@ -7,7 +9,7 @@ export const ETH_TOKEN: TTokenInfo = {
   name: 'Ether',
   symbol: 'ETH',
   decimals: 18,
-  logoURI: `https://assets.smold.app/api/token/1/0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee/logo-128.png`
+  logoURI: `https://assets.smold.app/api/token/1/0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee/logo-128.png`,
 }
 
 // Goerli testnet tokens
@@ -18,7 +20,8 @@ export const STETH_TOKEN: TTokenInfo ={
   name: 'Liquid staked Ether 2.0',
   symbol: 'stETH',
   decimals: 18,
-  logoURI: 'https://assets.smold.app/api/token/1/0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84/logo-128.png'
+  logoURI: 'https://assets.smold.app/api/token/1/0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84/logo-128.png',
+  abi: erc20ABI
 }
 
 export const YNETH_TOKEN: TTokenInfo ={
@@ -27,5 +30,6 @@ export const YNETH_TOKEN: TTokenInfo ={
   name: 'YieldNest ETH',
   symbol: 'ynETH',
   decimals: 18,
-  logoURI: 'https://assets.smold.app/api/token/1/0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84/logo-128.png'
+  logoURI: 'https://assets.smold.app/api/token/1/0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84/logo-128.png',
+  abi: YNETH_ABI
 }
