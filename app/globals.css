@@ -6,13 +6,13 @@
 @layer base {
   :root {
     --background: 229 77% 7%;
-    --foreground: 0 0% 100%;
+    --foreground: 212 33% 91%;
 
     --card: 209 71% 10%;
-    --card-foreground: 153 89% 90%;
+    --card-foreground: 212 33% 91%;
 
     --popover: 209 71% 10%;
-    --popover-foreground: 0 0% 100%;
+    --popover-foreground: 212 33% 91%;
 
     --primary: 176 63% 47%;
     --primary-foreground: 0 0% 100%;
@@ -75,7 +75,12 @@
     @apply bg-background text-foreground;
   }
 }
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-archivo);
 }
 
