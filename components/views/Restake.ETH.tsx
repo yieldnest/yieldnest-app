@@ -78,7 +78,8 @@ const ViewRestakeETH = ({ type }: { type: string }) => {
         <>
           <div className='flex mt-2 items-center justify-center'>
             <p className=''>Transaction Successful! View Tx</p>
-            <Link href={`https://goerli.etherscan.io/tx/${result?.receipt?.transactionHash}`} rel="noopener noreferrer" target="_blank">
+            <Link href={`https://goerli.etherscan.io/tx/${result?.receipt?.transactionHash}`} 
+              rel="noopener noreferrer" target="_blank">
               <ExternalLink className='h-6 w-6 ml-2 text-primary hover:text-accent'/>
             </Link>       
           </div>

@@ -25,13 +25,15 @@ const PoolDetails = () => {
       <div className='flex flex-col w-full p-4 gap-2'>
         <div className='flex justify-between w-full'>
           <p>ynETH token</p>
-          <Link href={`${etherscanURL}${YNETH_TOKEN.address}`} className='text-muted'>{
-            truncateHex(YNETH_TOKEN.address, 6)}
+          <Link href={`${etherscanURL}${YNETH_TOKEN.address}`} className='text-muted'
+            rel="noopener noreferrer" target="_blank">{
+              truncateHex(YNETH_TOKEN.address, 6)}
           </Link>
         </div>
         <div className='flex justify-between w-full'>
           <p>ynETH pool</p>
-          <Link href={`${etherscanURL}${process.env.NEXT_PUBLIC_YNETH_ADDRESS}`} className='text-muted'>
+          <Link href={`${etherscanURL}${process.env.NEXT_PUBLIC_YNETH_ADDRESS}`} className='text-muted'
+            rel="noopener noreferrer" target="_blank">
             {truncateHex(process.env.NEXT_PUBLIC_YNETH_ADDRESS, 6)}
           </Link>
         </div>
