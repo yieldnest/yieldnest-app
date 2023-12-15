@@ -33,7 +33,7 @@ const PoolOverview = (props: PoolOverviewProps) => {
   }, [poolData, ])
 
   return (
-    <section className='flex justify-between items-center mt-6 w-full px-4 md:w-4/6 lg:w-1/2'>
+    <section className='flex justify-between items-center mt-6 w-full px-4 md:w-full md:px-8 lg:w-5/6'>
       <div>
         <div className='my-4'>
           <h1 className='text-6xl font-semibold'>
@@ -46,7 +46,8 @@ const PoolOverview = (props: PoolOverviewProps) => {
             {Number(poolData.userBalance.normalized) ?
               <>
                 <p className='text-3xl font-semibold'>{formatAmount(poolData.userBalance.normalized, 2, 6)}</p>
-                <p className='text-foreground/60'>${formatAmount(Number(poolData.userBalance.normalized) * Number(prices?.data?.price), 2, 4)}</p>
+                <p className='text-foreground/60'>$
+                  {formatAmount(Number(poolData.userBalance.normalized) * Number(prices?.data?.price), 2, 4)}</p>
               </>
               :
               '--'}
@@ -65,7 +66,7 @@ const PoolOverview = (props: PoolOverviewProps) => {
       </div>
       <div className='text-right'>
         <div className='mb-2'>
-          <h2 className='mb-1'>Total Staked</h2>
+          <h2 className='mb-1'>Total ETH Staked</h2>
           {TVL && TAL ?
             <>
               <p className='text-xl font-semibold'>{formatAmount(TAL.normalized, 2, 6)}</p>
