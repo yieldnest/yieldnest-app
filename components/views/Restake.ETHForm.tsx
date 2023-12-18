@@ -104,6 +104,7 @@ const RestakeETHForm = ({ tokens, amount, onUpdateAmount, isDisabled}: {
             placeholder={'0.000000'}
             value={amount?.normalized || ''}
             onChange={onChangeAmount}
+            onWheel={(e) => (e.target as HTMLInputElement).blur()}
           />
           <div className='flex items-center justify-between border border-border rounded-lg gap-2 p-2'>
             <p className='pr-2'>
