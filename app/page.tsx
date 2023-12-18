@@ -31,7 +31,7 @@ export default function Home() {
     case 0:
       return <ViewRestake type={'ETH'}  />
     case 1:
-      return <ViewUnstake />
+      return <ViewUnstake tokens={[YNETH_TOKEN]} />
     case 2:
       return <ViewClaim />
     default:
