@@ -9,7 +9,7 @@ import { ButtonTx } from '@/components/ui/ButtonTx'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXTwitter, faDiscord } from '@fortawesome/free-brands-svg-icons'
 
-import UnstakeForm from './Unstake.Form'
+import WithdrawForm from './Withdraw.Form'
 import {
   Tooltip,
   TooltipContent,
@@ -21,24 +21,35 @@ import type { TTxStatus } from '@/types/transaction'
 import type { TTokenInfoArray } from '@/types/index'
 import type { TNormalizedBN } from '@/lib/format.bigNumber'
 
-const ViewUnstakeToken = ({ tokens }: { tokens: TTokenInfoArray }) => {
+const ViewWithdrawToken = ({ tokens }: { tokens: TTokenInfoArray }) => {
 
-  const [ balance, setBalance ] = useState(toNormalizedBN(0))
-  const [ amount, setAmount ] = useState<TNormalizedBN>(toNormalizedBN(0))
-  const [ txStatus, setTxStatus ] = useState<TTxStatus>(defaultTxStatus)
-
-  const { provider, address } = useWeb3()
+  const { isActive, provider, address, chainID } = useWeb3()
   const { data: balanceToken } = useBalance({
     address: address,
     token: tokens[0].address,
     watch: true,
   })
 
+  const [ balance, setBalance ] = useState(toNormalizedBN(0))
+  const [ amount, setAmount ] = useState<TNormalizedBN>(toNormalizedBN(0))
+  const [ txStatus, setTxStatus ] = useState<TTxStatus>(defaultTxStatus)
+  const [ buttonLabel, setButtonLabel ] = useState<string>('Connect Wallet')
+
   useEffect(() => {
     if (balanceToken) {
       setBalance(toNormalizedBN(balanceToken.value))
     }
   }, [balanceToken])
+
+  useEffect(() => {
+    if (isActive && chainID === Number(process.env.NEXT_PUBLIC_DEFAULT_CHAIN_ID)) {
+      setButtonLabel('Restake')
+    } else if (!isActive && chainID !== Number(process.env.NEXT_PUBLIC_DEFAULT_CHAIN_ID)) {
+      setButtonLabel('Invalid Network')
+    } else {
+      setButtonLabel('Connect Wallet')
+    }
+  }, [isActive, chainID])
 
   const onChangeAmount = useCallback((amount: TNormalizedBN): void => {
     setAmount(amount)
@@ -54,14 +65,14 @@ const ViewUnstakeToken = ({ tokens }: { tokens: TTokenInfoArray }) => {
     <>
       <div className='pt-4'>
         <div className='mt-5 grid gap-5'>
-          <UnstakeForm
+          <WithdrawForm
             tokens={[YNETH_TOKEN, ETH_TOKEN]}
             amount={amount.raw === -1n ? toNormalizedBN(0) : amount}
             onUpdateAmount={(amount): void => onChangeAmount(amount)}
             isDisabled={false} />
         </div>
       </div>
-      <div className='mt-4 flex justify-start gap-2'>
+      <div className='mt-4 flex flex-col justify-start gap-2'>
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger>
@@ -72,8 +83,8 @@ const ViewUnstakeToken = ({ tokens }: { tokens: TTokenInfoArray }) => {
                 isBusy={txStatus.pending}
                 // ! Button is currently disabled. Remove true to enable.
                 isDisabled={!canDeposit || !provider || true}
-                className='w-full md:w-[184px] border-2 rounded-lg px-4 py-2'>
-                {txStatus.pending ? '' : 'Unstake'}
+                className='w-full border-2 rounded-lg px-4 py-2'>
+                {buttonLabel && txStatus.pending ? '' : buttonLabel}
               </ButtonTx>
             </TooltipTrigger>
             <TooltipContent>
@@ -94,11 +105,9 @@ const ViewUnstakeToken = ({ tokens }: { tokens: TTokenInfoArray }) => {
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
-
-        
       </div>
     </>
   )
 }
 
-export default ViewUnstakeToken
+export default ViewWithdrawToken

@@ -16,9 +16,10 @@ import type { ChangeEvent, ReactElement } from 'react'
 
 
 /**
- * This form base form for the restake view. This is where you can edit inputs and form styling.
+ * WithdrawForm is a form component that allows users to withdraw their tokens.
+ * It supports withdrawing of ETH tokens with support for other tokens coming soon.
  */
-const UnstakeForm = ({ tokens, amount, onUpdateAmount, isDisabled}: {
+const WithdrawForm = ({ tokens, amount, onUpdateAmount, isDisabled}: {
   tokens: TTokenInfoArray,
 	amount: TNormalizedBN,
 	onUpdateAmount: (amount: TNormalizedBN) => void,
@@ -169,4 +170,4 @@ const UnstakeForm = ({ tokens, amount, onUpdateAmount, isDisabled}: {
   )
 }
 
-export default UnstakeForm
+export default WithdrawForm
