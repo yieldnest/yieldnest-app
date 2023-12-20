@@ -26,7 +26,7 @@ type DepositResult = {
 
 const ViewRestakeETH = ({ type }: { type: string }) => {
 
-  const { isActive, provider, address } = useWeb3()
+  const { isActive, provider, address, chainID } = useWeb3()
   const { data: balanceETH } = useBalance({
     address: address,
     watch: true,
@@ -37,6 +37,7 @@ const ViewRestakeETH = ({ type }: { type: string }) => {
   const [ txStatus, setTxStatus ] = useState<TTxStatus>(defaultTxStatus)
   // Displays a message to the user after a transaction result is returned.
   const [ txResultMessage, setTxResultMessage ] = useState<ReactNode>('')
+  const [ buttonLabel, setButtonLabel ] = useState<string>('Connect Wallet')
 
   // Updates the balance when the balanceETH changes.
   useEffect(() => {
@@ -48,6 +49,16 @@ const ViewRestakeETH = ({ type }: { type: string }) => {
   const onChangeAmount = useCallback((amount: TNormalizedBN): void => {
     setAmount(amount)
   }, [amount])
+
+  useEffect(() => {
+    if (isActive && chainID === Number(process.env.NEXT_PUBLIC_DEFAULT_CHAIN_ID)) {
+      setButtonLabel('Restake')
+    } else if (!isActive && chainID !== Number(process.env.NEXT_PUBLIC_DEFAULT_CHAIN_ID)) {
+      setButtonLabel('Invalid Network')
+    } else {
+      setButtonLabel('Connect Wallet')
+    }
+  }, [isActive, chainID])
 
   // Checks if a users balance is greater than 0 and less than or equal to their balance.
   // Used to enable/disable the deposit button.
@@ -151,13 +162,14 @@ const ViewRestakeETH = ({ type }: { type: string }) => {
               onDeposit()
             }}
             isBusy={txStatus.pending}
-            isDisabled={!canDeposit || !provider}
+            isDisabled={!canDeposit || !provider || !isActive || 
+              chainID !== Number(process.env.NEXT_PUBLIC_DEFAULT_CHAIN_ID)}
             className='w-full md:w-[184px] border-2 rounded-lg px-4 py-2'>
-            {txStatus.pending ? '' : 'Restake'}
+            {buttonLabel && txStatus.pending ? '' : buttonLabel}
           </ButtonTx>
         </div>
         {txResultMessage && 
-          txResultMessage
+          txResultMessage 
         }
       </div>
     </>
