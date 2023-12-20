@@ -164,7 +164,7 @@ const ViewRestakeETH = ({ type }: { type: string }) => {
             isBusy={txStatus.pending}
             isDisabled={!canDeposit || !provider || !isActive || 
               chainID !== Number(process.env.NEXT_PUBLIC_DEFAULT_CHAIN_ID)}
-            className='w-full md:w-[184px] border-2 rounded-lg px-4 py-2'>
+            className='w-full border-2 rounded-lg px-4 py-2'>
             {buttonLabel && txStatus.pending ? '' : buttonLabel}
           </ButtonTx>
         </div>
