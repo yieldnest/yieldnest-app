@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { truncateHex } from '@/lib/address'
 import { YNETH_TOKEN } from '@/lib/tokens'
 
-import { Info } from 'lucide-react'
+import { Info, ExternalLink } from 'lucide-react'
 import {
   Tooltip,
   TooltipContent,
@@ -16,25 +16,35 @@ const PoolDetails = () => {
 
   return (
     <section className='flex w-full flex-col bg-card rounded-xl sm:max-w-md p-4'>
-      <h1 className='text-3xl px-4'>Pool Details</h1>
+      <h1 className='text-3xl px-4'>ynETH Details</h1>
       <div className='flex flex-col w-full p-4 gap-2'>
         <p>Restake ETH to receive ynETH</p>
-        <p>{`ynETH is a liquid restaking token that earns yield from ETH vallidators 
-          and Nodes running AVS’s in EigenLayer.`}</p>
+        <p>{`ynETH is a native liquid restaking token that earns yield from ETH validators 
+          and AVSs on top of EigenLayer.`}
+        <Link href={'https://docs.yieldnest.finance/protocol-design/native-liquid-restaking-tokens-nlrts/yneth-token'}
+          className='pl-1 text-muted hover:text-primary/50'>
+            [learn more here]
+        </Link>
+        </p>
+
       </div>
       <div className='flex flex-col w-full p-4 gap-2'>
         <div className='flex justify-between w-full'>
           <p>ynETH token</p>
-          <Link href={`${etherscanURL}${YNETH_TOKEN.address}`} className='text-muted'
-            rel="noopener noreferrer" target="_blank">{
-              truncateHex(YNETH_TOKEN.address, 6)}
+          <Link href={`${etherscanURL}${YNETH_TOKEN.address}`} 
+            className='text-muted flex gap-2 items-center'
+            rel="noopener noreferrer" target="_blank">
+            {truncateHex(YNETH_TOKEN.address, 6)}
+            <ExternalLink className='h-4 w-4'/>
           </Link>
         </div>
         <div className='flex justify-between w-full'>
-          <p>ynETH pool</p>
-          <Link href={`${etherscanURL}${process.env.NEXT_PUBLIC_YNETH_ADDRESS}`} className='text-muted'
+          <p>ynETH minter</p>
+          <Link href={`${etherscanURL}${process.env.NEXT_PUBLIC_YNETH_ADDRESS}`} 
+            className='text-muted flex gap-2 items-center'
             rel="noopener noreferrer" target="_blank">
             {truncateHex(process.env.NEXT_PUBLIC_YNETH_ADDRESS, 6)}
+            <ExternalLink className='h-4 w-4'/>
           </Link>
         </div>
         <div className='flex justify-between w-full'>
