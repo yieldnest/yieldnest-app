@@ -5,7 +5,7 @@ import ViewClaim from '@/components/views/Claim'
 import ViewWithdraw from '@/components/views/Withdraw'
 import PoolOverview from '@/components/views/PoolOverview'
 import PoolDetails from '@/components/views/PoolDetails'
-import { YNETH_TOKEN } from '@/lib/tokens'
+import { YNETH_TOKEN, ETH_TOKEN } from '@/lib/tokens'
 import type { ReactElement } from 'react'
 
 /**
@@ -47,7 +47,7 @@ export default function Home() {
   return (
     <main className="flex flex-col h-full w-full items-center justify-between mt-14">
       <PoolOverview
-        token={YNETH_TOKEN}
+        token={[YNETH_TOKEN, ETH_TOKEN]}
       />
       <div className='flex flex-col gap-8 px-4 my-12 md:flex-row md:gap-6'>
         <div className="mx-auto flex w-full flex-col items-center justify-center bg-card rounded-xl sm:w-{400}">
