@@ -135,7 +135,7 @@ const ViewRestakeETH = ({ type }: { type: string }) => {
 
   return (
     <>
-      <div className='pt-4'>
+      <div className='pt-2'>
         <div className='mt-5 grid gap-5'>
           <RestakeETHForm
             tokens={[ETH_TOKEN, YNETH_TOKEN]}

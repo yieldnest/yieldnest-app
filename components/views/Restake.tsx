@@ -10,7 +10,7 @@ const ViewRestake = ({ type }: { type: 'ETH' }) => {
 
   return (
     <section className='w-full'>
-      <div className='my-6'>
+      <div className='my-4'>
         <div className='mx-auto w-5/6'>
           <div className='flex w-full flex-col'>
             <div className='flex flex-row items-center justify-between'>

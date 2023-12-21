@@ -63,7 +63,7 @@ const ViewWithdrawToken = ({ tokens }: { tokens: TTokenInfoArray }) => {
 
   return (
     <>
-      <div className='pt-4'>
+      <div className='pt-2'>
         <div className='mt-5 grid gap-5'>
           <WithdrawForm
             tokens={[YNETH_TOKEN, ETH_TOKEN]}
