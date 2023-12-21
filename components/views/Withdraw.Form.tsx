@@ -1,24 +1,25 @@
 
+
 import { useState, useCallback, useEffect } from 'react'
 import { useWeb3 } from '@/contexts/useWeb3'
-import { useBalance, useContractRead } from 'wagmi'
+import { useBalance } from 'wagmi'
 import { handleInputChangeEventValue } from '@/lib/helpers'
 import { toNormalizedBN } from '@/lib/format.bigNumber'
 import { formatAmount } from '@/lib/format.number'
-import { toAddress } from '@/lib/address'
 import { ImageWithFallback } from '@/components/common/ImageWithFallback'
 import { useDebouncedState } from '@react-hookz/web'
-import YNETH_POOL_ABI from '@/lib/abi/ynETHPool.abi'
 import { cn } from '@/lib/cn'
-import { ArrowDown, Loader } from 'lucide-react'
+import { ArrowDown } from 'lucide-react'
 import type { TNormalizedBN } from '@/lib/format.bigNumber'
 import type { TTokenInfoArray } from '@/types/index'
 import type { ChangeEvent, ReactElement } from 'react'
 
+
 /**
- * This form base form for the restake view. This is where you can edit inputs and form styling.
+ * WithdrawForm is a form component that allows users to withdraw their tokens.
+ * It supports withdrawing of ETH tokens with support for other tokens coming soon.
  */
-const RestakeETHForm = ({ tokens, amount, onUpdateAmount, isDisabled}: {
+const WithdrawForm = ({ tokens, amount, onUpdateAmount, isDisabled}: {
   tokens: TTokenInfoArray,
 	amount: TNormalizedBN,
 	onUpdateAmount: (amount: TNormalizedBN) => void,
@@ -37,30 +38,20 @@ const RestakeETHForm = ({ tokens, amount, onUpdateAmount, isDisabled}: {
     address: address,
     watch: true
   })
-  const { data: balanceYNETH } = useBalance({
+  const { data: balanceToken } = useBalance({
     address: address,
-    token: tokens[1].address,
+    token: tokens[0].address,
     watch: true
-  })
-
-  // Gets the estimated ynETH amount to be received from the restake.
-  const { data: ynETHestimator, isLoading: loadingEstimator } = useContractRead({
-    address: toAddress(process.env.NEXT_PUBLIC_YNETH_ADDRESS),
-    abi: YNETH_POOL_ABI,
-    functionName: 'ethToynETH',
-    args: [delayedAmount.raw],
-    enabled: isActive
   })
 
   // Updates the balance when the balanceETH or balanceYNETH changes.
   useEffect(() => {
     if (balanceETH) {
-      setBalance((prevBalance) => [toNormalizedBN(balanceETH.value), prevBalance[1]])
+      setBalance((prevBalance) => [prevBalance[0], toNormalizedBN(balanceETH.value)])}
+    if (balanceToken) {
+      setBalance((prevBalance) => [toNormalizedBN(balanceToken.value), prevBalance[1]])
     }
-    if (balanceYNETH) {
-      setBalance((prevBalance) => [prevBalance[0], toNormalizedBN(balanceYNETH.value)])
-    }
-  }, [balanceETH, balanceYNETH])
+  }, [balanceETH, balanceToken])
 
   // The onChangeAmount function handles the change of the input value for the amount to be restaked.
   // It ensures that the new amount does not exceed the user's balance.
@@ -87,7 +78,7 @@ const RestakeETHForm = ({ tokens, amount, onUpdateAmount, isDisabled}: {
   useEffect(() => {
     // delayedAmount is used to smooth out the ynETHestimator read contract call.
     setDelayedAmount(amount)
-  }, [amount])
+  }, [amount, balance])
 
   return (
     <section className='w-full'>
@@ -144,12 +135,13 @@ const RestakeETHForm = ({ tokens, amount, onUpdateAmount, isDisabled}: {
       <div className={cn('flex w-full flex-col gap-4 rounded-md p-4 bg-background')}>
         <div className='flex justify-between items-center'>
           <div>
-            <p className='w-full pl-2 overflow-x-scroll border-none bg-background px-0 outline-none text-xl'>
-              {loadingEstimator ? 
-                <Loader className='h-6 w-6 animate-spin-slow ' /> 
-                :
-                ynETHestimator && !loadingEstimator ? 
-                  formatAmount(toNormalizedBN(ynETHestimator).normalized, 2, 6) : '0.00'}
+            <p className='w-full pl-2 overflow-x-scroll border-none bg-background text-muted px-0 outline-none text-xl'>
+              {/* Placeholder to represent a 1:1 exchange rate. */}
+              {amount?.normalized ?
+                formatAmount(amount?.normalized, 2, 6) 
+                : 
+                '0.00'
+              }
             </p>
           </div>
           <div className='flex items-center justify-between border border-border rounded-lg gap-2 p-2'>
@@ -178,4 +170,4 @@ const RestakeETHForm = ({ tokens, amount, onUpdateAmount, isDisabled}: {
   )
 }
 
-export default RestakeETHForm
+export default WithdrawForm

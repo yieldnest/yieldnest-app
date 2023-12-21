@@ -142,13 +142,15 @@ function	WalletSelector(): ReactElement {
       <p suppressHydrationWarning className={'!text-xs md:!text-sm'}>
         {walletIdentity ? 
           <span>
-            <span className={'relative flex h-8 px-4 cursor-pointer items-center justify-center border border-border rounded-lg bg-background transition-all hover:bg-card'}>
+            <span className={`relative flex h-8 px-4 cursor-pointer items-center justify-center border 
+            border-border rounded-lg bg-background transition-all hover:bg-card`}>
               {walletIdentity}
             </span>
           </span>
           : (
             <span>
-              <span className={'relative flex h-8 px-4 cursor-pointer items-center justify-center border border-border rounded-lg bg-background transition-all hover:bg-card'}>
+              <span className={`relative flex h-8 px-4 cursor-pointer items-center justify-center border 
+              border-border rounded-lg bg-background transition-all hover:bg-card`}>
                 <Wallet className={'h-4 w-4 mr-2'} /> {'Connect'}
               </span>
             </span>

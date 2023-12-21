@@ -17,9 +17,9 @@
 
 export function	formatAmount(amount: number | string, 
   minimumFractionDigits = 2, maximumFractionDigits = 2, displayDigits = 0): string {
-  let		locale = 'fr-FR'
+  let		locale = 'en-US'
   if (typeof(navigator) !== 'undefined') {
-    locale = navigator.language || 'fr-FR'
+    locale = navigator.language || 'en-US'
   }
   if (maximumFractionDigits < minimumFractionDigits) {
     maximumFractionDigits = minimumFractionDigits

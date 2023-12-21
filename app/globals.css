@@ -6,13 +6,13 @@
 @layer base {
   :root {
     --background: 229 77% 7%;
-    --foreground: 0 0% 100%;
+    --foreground: 212 33% 91%;
 
     --card: 209 71% 10%;
-    --card-foreground: 153 89% 90%;
+    --card-foreground: 212 33% 91%;
 
     --popover: 209 71% 10%;
-    --popover-foreground: 0 0% 100%;
+    --popover-foreground: 212 33% 91%;
 
     --primary: 176 63% 47%;
     --primary-foreground: 0 0% 100%;
@@ -20,7 +20,7 @@
     --secondary: 168 6% 84%;
     --secondary-foreground: 222.2 47.4% 11.2%;
 
-    --muted: 229 77% 7%;
+    --muted: 0 0% 69%;
     --muted-foreground: 220 8.9% 46.1%;
 
     --accent: 229 68% 46%;
@@ -74,6 +74,18 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-archivo);
+}
+
+p {
+  font-family: var(--font-nunito);
 }
 
 input[type="number"]::-webkit-inner-spin-button,

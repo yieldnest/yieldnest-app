@@ -1,12 +1,12 @@
-import { useState } from 'react'
-import ViewRestakeETH from './Restake.ETH'
+import ViewWithdrawToken from './Withdraw.Token'
+
+import type { TTokenInfoArray } from '@/types/index'
 
 /**
  * ViewRestake is a high level form component that allows users to restake their tokens.
  * It supports restaking of ETH tokens with support for other tokens coming soon.
  */
-const ViewRestake = ({ type }: { type: 'ETH' }) => {
-  const [shouldRestakeEth] = useState<boolean>(type === 'ETH')
+const ViewWithdraw = ({ tokens }: { tokens: TTokenInfoArray }) => {
 
   return (
     <section className='w-full'>
@@ -15,18 +15,10 @@ const ViewRestake = ({ type }: { type: 'ETH' }) => {
           <div className='flex w-full flex-col'>
             <div className='flex flex-row items-center justify-between'>
               <h2 className='text-xl font-bold'>
-                {`Restake ${type}`}
+                {`Withdraw ${tokens[0].symbol}`}
               </h2>
             </div>
-            {/* --------ViewRestakeToken will be added later when more staking pools are created--------  */}
-            {/*  {!shouldStakeEth && (
-							<ViewRestakeToken />
-						)} */}
-            {shouldRestakeEth && (
-              <ViewRestakeETH
-                type={type}
-              />
-            )}
+            <ViewWithdrawToken tokens={tokens} />
           </div>
         </div>
       </div>
@@ -34,4 +26,4 @@ const ViewRestake = ({ type }: { type: 'ETH' }) => {
   )
 }
 
-export default ViewRestake
+export default ViewWithdraw

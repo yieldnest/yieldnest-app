@@ -2,13 +2,13 @@
   "extends": ["next/core-web-vitals"],
   "rules": {
     "indent": ["error", 2],
+    "max-len": ["error", { "code": 120 }],
     "semi": ["error", "never"],
     "eol-last": ["error", "always"],
     "quotes": [
       "error",
       "single",
       { "avoidEscape": true, "allowTemplateLiterals": true }
-    ],
-    "max-len": ["error", { "code": 120, "ignorePattern": "^\\s*<.*>$" }]
+    ]
   }
 }

@@ -1,6 +1,6 @@
 import assert from 'assert'
 import { erc20ABI } from '@wagmi/core'
-import YNETH_ABI from '@/lib/abi/ynETH.abi'
+import YNETH_POOL_ABI from '@/lib/abi/ynETHPool.abi'
 import { assertAddress } from '@/lib/address'
 import { handleTx } from '@/lib/wagmi/provider'
 
@@ -51,7 +51,7 @@ export async function depositETH(props: TDepositEth): Promise<TTxResponse> {
 
   return await handleTx(props, {
     address: props.contractAddress,
-    abi: YNETH_ABI,
+    abi: YNETH_POOL_ABI,
     functionName: 'deposit',
     value: props.amount,
     args: [props.minAmount]

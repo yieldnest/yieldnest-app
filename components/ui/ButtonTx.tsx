@@ -33,7 +33,7 @@ const ButtonTx = forwardRef(
         {...(rest as React.ComponentPropsWithoutRef<'button'>)}
         ref={ref}
         className={cn(
-          `${rest.className}`,
+          `hover:bg-primary/50 ${rest.className}`,
           isDisabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'
         )}
         aria-busy={isBusy}

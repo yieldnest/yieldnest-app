@@ -1,4 +1,4 @@
-const YNETH_ABI = [
+const YNETH_POOL_ABI = [
   { inputs: [], stateMutability: 'nonpayable', type: 'constructor' },
   { inputs: [], name: 'AccessControlBadConfirmation', type: 'error' },
   {
@@ -296,4 +296,4 @@ const YNETH_ABI = [
   },
 ] as const
 
-export default YNETH_ABI
+export default YNETH_POOL_ABI
