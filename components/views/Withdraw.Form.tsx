@@ -103,9 +103,9 @@ const WithdrawForm = ({ tokens, amount, onUpdateAmount, isDisabled}: {
             </p>
             <div className='h-6 w-6 flex items-center justify-center'>
               <ImageWithFallback
-                alt={tokens[1].name}
+                alt={tokens[0].name}
                 unoptimized
-                src={'/yn-icon.svg'}
+                src={tokens[0].logoURI}
                 width={24}
                 height={24} />
             </div>

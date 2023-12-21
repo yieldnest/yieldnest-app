@@ -29,6 +29,6 @@ export const YNETH_TOKEN: TTokenInfo ={
   name: 'YieldNest ETH',
   symbol: 'ynETH',
   decimals: 18,
-  logoURI: 'https://assets.smold.app/api/token/1/0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84/logo-128.png',
+  logoURI: '/yn-token-icon.svg',
   abi: erc20ABI
 }

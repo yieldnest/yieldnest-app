@@ -160,7 +160,7 @@ const RestakeETHForm = ({ tokens, amount, onUpdateAmount, isDisabled}: {
               <ImageWithFallback
                 alt={tokens[1].name}
                 unoptimized
-                src={'/yn-icon.svg'}
+                src={tokens[1].logoURI}
                 width={24}
                 height={24} />
             </div>
