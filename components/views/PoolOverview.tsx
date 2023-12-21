@@ -114,12 +114,12 @@ const PoolOverview = (props: PoolOverviewProps) => {
         </div>
         <div className='mb-2'>
           <div className='mb-1 flex items-center justify-end gap-1'>
-            <h2>APY</h2>
+            <h2>APR</h2>
             <TooltipProvider>
               <Tooltip >
                 <TooltipTrigger><Info className='h-4 w-4 cursor-pointer text-muted'/></TooltipTrigger>
                 <TooltipContent>
-                  <p>Based on a 7 day moving average</p>
+                  <p>Moving Average of APR for a 7 day period.</p>
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>

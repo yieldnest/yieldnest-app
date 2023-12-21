@@ -82,8 +82,8 @@ const PoolDetails = () => {
             <div className='flex justify-between items-center py-2'>
               <h3>ETH Validators</h3>
               <div className='flex'>
-                <p>APY</p>
-                <p className='text-muted pl-2'>4.12%</p>
+                <p>APR</p>
+                <p className='text-muted pl-2'>--%</p>
               </div>
             </div>
             <p className='text-muted'>Rewards received from ETH validators.</p>
@@ -92,7 +92,7 @@ const PoolDetails = () => {
             <div className='flex justify-between items-center py-2'>
               <h3 >EigenDA</h3>
               <div className='flex'>
-                <p>APY</p>
+                <p>APR</p>
                 <p className='text-muted pl-2'>--%</p>
               </div>
             </div>
