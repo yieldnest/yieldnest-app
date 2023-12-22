@@ -10,11 +10,11 @@ const ViewWithdraw = ({ tokens }: { tokens: TTokenInfoArray }) => {
 
   return (
     <section className='w-full'>
-      <div className='my-4'>
+      <div className='mb-6'>
         <div className='mx-auto w-5/6'>
           <div className='flex w-full flex-col'>
             <div className='flex flex-row items-center justify-between'>
-              <h2 className='text-xl font-bold'>
+              <h2 className='text-xl'>
                 {`Withdraw ${tokens[0].symbol}`}
               </h2>
             </div>

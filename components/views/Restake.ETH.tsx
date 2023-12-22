@@ -80,7 +80,7 @@ const ViewRestakeETH = ({ type }: { type: string }) => {
       chainID: Number(process.env.NEXT_PUBLIC_BASE_CHAIN_ID),
       contractAddress: toAddress(process.env.NEXT_PUBLIC_YNETH_ADDRESS),
       amount: amount.raw,
-      minAmount: 0n,
+      address: toAddress(address),
       statusHandler: setTxStatus
     }) as DepositResult
     if (result.isSuccessful) {
@@ -135,7 +135,7 @@ const ViewRestakeETH = ({ type }: { type: string }) => {
 
   return (
     <>
-      <div className='pt-2'>
+      <div className=''>
         <div className='mt-5 grid gap-5'>
           <RestakeETHForm
             tokens={[ETH_TOKEN, YNETH_TOKEN]}
