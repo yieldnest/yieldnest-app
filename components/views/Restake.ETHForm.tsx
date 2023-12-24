@@ -47,7 +47,7 @@ const RestakeETHForm = ({ tokens, amount, onUpdateAmount, isDisabled}: {
   const { data: ynETHestimator, isLoading: loadingEstimator } = useContractRead({
     address: toAddress(process.env.NEXT_PUBLIC_YNETH_ADDRESS),
     abi: YNETH_POOL_ABI,
-    functionName: 'ethToynETH',
+    functionName: 'previewDeposit',
     args: [delayedAmount.raw],
     enabled: isActive
   })
@@ -106,7 +106,8 @@ const RestakeETHForm = ({ tokens, amount, onUpdateAmount, isDisabled}: {
             onChange={onChangeAmount}
             onWheel={(e) => (e.target as HTMLInputElement).blur()}
           />
-          <div className='flex items-center justify-between border border-border rounded-lg gap-2 p-2'>
+          <div className='flex items-center justify-center w-full max-w-[110px]
+            border border-border rounded-lg gap-2 p-2'>
             <p className='pr-2'>
               {tokens[0].symbol}
             </p>
@@ -152,7 +153,8 @@ const RestakeETHForm = ({ tokens, amount, onUpdateAmount, isDisabled}: {
                   formatAmount(toNormalizedBN(ynETHestimator).normalized, 2, 6) : '0.00'}
             </p>
           </div>
-          <div className='flex items-center justify-between border border-border rounded-lg gap-2 p-2'>
+          <div className='flex items-center justify-center w-full max-w-[110px]
+            border border-border rounded-lg gap-2 p-2'>
             <p className='pr-2'>
               {tokens[1].symbol}
             </p>

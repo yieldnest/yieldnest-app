@@ -97,7 +97,8 @@ const WithdrawForm = ({ tokens, amount, onUpdateAmount, isDisabled}: {
             onChange={onChangeAmount}
             onWheel={(e) => (e.target as HTMLInputElement).blur()}
           />
-          <div className='flex items-center justify-between border border-border rounded-lg gap-2 p-2'>
+          <div className='flex items-center justify-center w-full max-w-[110px]
+            border border-border rounded-lg gap-2 p-2'>
             <p className='pr-2'>
               {tokens[0].symbol}
             </p>
@@ -144,7 +145,8 @@ const WithdrawForm = ({ tokens, amount, onUpdateAmount, isDisabled}: {
               }
             </p>
           </div>
-          <div className='flex items-center justify-between border border-border rounded-lg gap-2 p-2'>
+          <div className='flex items-center justify-center w-full max-w-[110px]
+            border border-border rounded-lg gap-2 p-2'>
             <p className='pr-2'>
               {tokens[1].symbol}
             </p>
