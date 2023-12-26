@@ -73,7 +73,9 @@ const ContactForm = () => {
 
   return (
     <Dialog>
-      <DialogTrigger asChild className='w-full'><Button  className='w-full'>Contact Us</Button></DialogTrigger>
+      <DialogTrigger asChild className='w-full'>
+        <Button  className='w-full text-xl h-12'>Contact Us</Button>
+      </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Contact Us</DialogTitle>
