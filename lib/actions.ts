@@ -41,12 +41,10 @@ export async function approveERC20(props: TApproveERC20): Promise<TTxResponse> {
 ******************************************************************************/
 type TDepositEth = TWriteTransaction & {
 	amount: bigint
-	// minAmount: bigint
   address: TAddress
 }
 export async function depositETH(props: TDepositEth): Promise<TTxResponse> {
   assert(props.connector, 'No connector')
-  // assert(props.minAmount === 0n, 'minAmount is 0')
   assert(props.amount > 0n, 'Amount is 0')
   assertAddress(props.contractAddress, 'ynETH address')
 
@@ -55,6 +53,6 @@ export async function depositETH(props: TDepositEth): Promise<TTxResponse> {
     abi: YNETH_POOL_ABI,
     functionName: 'depositETH',
     value: props.amount,
-    args: [props.address]
+    args: [props.address],
   })
 }
