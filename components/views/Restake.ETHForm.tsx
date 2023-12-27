@@ -96,9 +96,6 @@ const RestakeETHForm = ({ tokens, amount, onUpdateAmount, isDisabled}: {
           <input 
             className='w-full pl-2 border-none bg-background px-0 outline-none text-xl'
             type={'number'}
-            inputMode={'numeric'}
-            min={0}
-            maxLength={20}
             step={1 / 10 ** (tokens[0]?.decimals || 18)}
             max={balance[0]?.normalized || 0}
             placeholder={'0.000000'}
