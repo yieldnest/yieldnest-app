@@ -60,6 +60,7 @@ const PoolValidators = () => {
             <TableCell className='text-right flex justify-end items-center gap-1'>
               {formatSince(node.created)}
               <Link href={`${beaconChainLink}/${node.publicKey}`}
+                rel="noopener noreferrer" target="_blank"
                 className='hover:text-primary/50'>
                 <ExternalLink className='h-3 w-3' />
               </Link>
