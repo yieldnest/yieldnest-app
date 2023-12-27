@@ -1,8 +1,9 @@
+
 import { useState, useCallback, useEffect, useMemo, ReactNode } from 'react'
 import Link from 'next/link'
 import assert from 'assert'
 import { useWeb3 } from '@/contexts/useWeb3'
-import { useBalance, useWalletClient } from 'wagmi'
+import { useBalance } from 'wagmi'
 import { toNormalizedBN } from '@/lib/format.bigNumber'
 import { ETH_TOKEN, YNETH_TOKEN } from '@/lib/tokens'
 import { toAddress } from '@/lib/address'
@@ -38,6 +39,7 @@ const ViewRestakeETH = ({ type }: { type: string }) => {
   // Displays a message to the user after a transaction result is returned.
   const [ txResultMessage, setTxResultMessage ] = useState<ReactNode>('')
   const [ buttonLabel, setButtonLabel ] = useState<string>('Connect Wallet')
+  const [ txHash, setTxHash ] = useState<{ txHash: string }>({ txHash: '' })
 
   // Updates the balance when the balanceETH changes.
   useEffect(() => {
@@ -81,39 +83,38 @@ const ViewRestakeETH = ({ type }: { type: string }) => {
       contractAddress: toAddress(process.env.NEXT_PUBLIC_YNETH_ADDRESS),
       amount: amount.raw,
       address: toAddress(address),
-      statusHandler: setTxStatus
+      statusHandler: setTxStatus,
+      hashHandler: setTxHash,
     }) as DepositResult
+    // console.log('TRANSACTION RESULT------>', result)
     if (result.isSuccessful) {
       setAmount(toNormalizedBN(0))
-      setTxResultMessage(
-        <>
-          <div className='flex mt-2 items-center justify-center'>
-            <p className=''>Transaction Successful! View Tx</p>
-            <Link href={`https://goerli.etherscan.io/tx/${result?.receipt?.transactionHash}`} 
-              rel="noopener noreferrer" target="_blank">
-              <ExternalLink className='h-6 w-6 ml-2 text-primary hover:text-accent'/>
-            </Link>       
-          </div>
-          <div className='flex mt-2 items-center justify-center'>
-            <Button
-              className='bg-primary/60'
-              onClick={addTokenToWallet}
-            >
-              Add ynETH to Wallet
-            </Button>
-          </div>
-        </>
-      )
+      setTimeout(() => {
+        setTxResultMessage(
+          <>
+            <div className='flex mt-2 items-center justify-center'>
+              <p className=''>Transaction Successful! View Tx</p>
+              <Link href={`https://goerli.etherscan.io/tx/${result?.receipt?.transactionHash}`} 
+                rel='noopener noreferrer' target='_blank'>
+                <ExternalLink className='h-4 w-4 ml-1 hover:text-primary/60'/>
+              </Link>       
+            </div>
+            <div className='flex mt-2 items-center justify-center'>
+              <Button
+                className='bg-background hover:bg-primary/30'
+                onClick={addTokenToWallet}
+              >
+                Add ynETH to Wallet
+              </Button>
+            </div>
+          </>
+        )
+      }, 1000)
+      
     } else {
       setTxResultMessage(<p className='text-sm text-red-500'>{result?.error?.details}</p>)}
 
   }, [isActive, amount])
-
-  // ? ************************ DEBUGGING ************************ 
-  useEffect(() => {
-    // console.log('canDeposit -->', canDeposit)
-    // console.log('balanceETH -->', balanceETH)
-  }, [canDeposit])
 
   // TODO: Move this to provider.ts to be reused by other tokens.
   const addTokenToWallet = async () => {
@@ -132,6 +133,13 @@ const ViewRestakeETH = ({ type }: { type: string }) => {
     })
     // TODO: Add a message to the user if the token was added or not.
   }
+
+  // ? ************************ DEBUGGING ************************ 
+  useEffect(() => {
+    console.log('txHash -->', txHash?.txHash)
+  }, [txHash])
+
+  
 
   return (
     <>
@@ -168,6 +176,18 @@ const ViewRestakeETH = ({ type }: { type: string }) => {
             {buttonLabel && txStatus.pending ? '' : buttonLabel}
           </ButtonTx>
         </div>
+        {txStatus.pending ? 
+          <div className='flex mt-2 items-center justify-center'>
+            {txHash?.txHash ? 
+              <p>Transaction confirmed. Your transaction is waiting to be included in a block.</p>  
+              :
+              <p>Transaction pending. Confirm transaction in wallet.</p>
+            }
+            
+          </div>
+          : 
+          ''
+        }
         {txResultMessage && 
           txResultMessage 
         }
