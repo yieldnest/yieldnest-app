@@ -125,7 +125,7 @@ export async function handleTx<
   } finally {
     setTimeout((): void => {
       args.statusHandler?.({...defaultTxStatus})
-    }, 4000)
+    }, 10000)
   }
 }
 
