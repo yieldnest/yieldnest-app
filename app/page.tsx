@@ -25,21 +25,26 @@ export const avsArray = [
     name: 'EigenDA', 
     logoURI: '/logos/eigenda.jpeg',
     link: 'https://twitter.com/eigen_da',
-    description: `Data availability layer from EigenLayer.`,
+    description: `EigenDA is an AVS on Eigenlayer providing low-cost, 
+    hyperscale data availability to rollups, secured by ETH restaking.
+    `,
     apr: 3.54
   },
   {
     name: 'AltLayer', 
     logoURI: '/logos/altlayer.svg',
     link: 'https://twitter.com/alt_layer',
-    description: `Data availability layer from EigenLayer.`,
+    description: `Altlayer is a decentralized protocol that facilitates the 
+    launch of native and restaked rollups with both optimistic and zk rollup stacks.
+    `,
     apr: 3.08
   },
   {
     name: 'Espresso Systems', 
     logoURI: '/logos/espresso.svg',
     link: 'https://twitter.com/EspressoSys',
-    description: `Data availability layer from EigenLayer.`,
+    description: `The Espresso Sequencer is designed to offer rollups a means of 
+    achieving credible neutrality, enhanced interoperability, & long-term alignment with Ethereum.`,
     apr: 2.64
   },
 ]
@@ -206,7 +211,7 @@ const Index = () => {
           {/* title section */}
           <div className='flex flex-col w-full justify-center items-center h-[80px] pt-4 pb-2'>
             <h3 className='text-3xl'>ynTryLSD</h3>
-            <p className='text-sm'>(coming soon)</p>
+            <p className='text-sm'>(Coming Soon)</p>
           </div>
           {/* details section */}
           <Separator className=''/>
