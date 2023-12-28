@@ -97,7 +97,7 @@ const ViewRestakeETH = ({ type }: { type: string }) => {
     // Used by the ButtonTx component.
     const result = await depositETH({
       connector: provider,
-      chainID: Number(process.env.NEXT_PUBLIC_BASE_CHAIN_ID),
+      chainID: Number(process.env.NEXT_PUBLIC_DEFAULT_CHAIN_ID),
       contractAddress: toAddress(process.env.NEXT_PUBLIC_YNETH_ADDRESS),
       amount: amount.raw,
       address: toAddress(address),
