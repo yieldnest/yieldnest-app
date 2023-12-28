@@ -1,18 +1,18 @@
-import { useState, useCallback, useEffect, useMemo, ReactNode } from 'react'
-import Link from 'next/link'
+
+import { useState, useCallback, useEffect, useMemo } from 'react'
 import assert from 'assert'
 import { useWeb3 } from '@/contexts/useWeb3'
-import { useBalance, useWalletClient } from 'wagmi'
+import { useBalance } from 'wagmi'
 import { toNormalizedBN } from '@/lib/format.bigNumber'
 import { ETH_TOKEN, YNETH_TOKEN } from '@/lib/tokens'
 import { toAddress } from '@/lib/address'
 import { depositETH } from '@/lib/actions'
 import { defaultTxStatus } from '@/lib/wagmi/provider'
 import { ButtonTx } from '@/components/ui/ButtonTx'
-import { Button } from '@/components/ui/button'
-import { ExternalLink } from 'lucide-react'
+import { TxDialog } from '@/components/ui/txDialog'
 import RestakeETHForm from './Restake.ETHForm'
 
+import type { TTokenInfo } from '@/types/index'
 import type { TTxStatus, TBaseError } from '@/types/transaction'
 import type { TNormalizedBN } from '@/lib/format.bigNumber'
 
@@ -24,7 +24,22 @@ type DepositResult = {
   } 
 }
 
+export type TTransactionResult = {
+  isSuccess: boolean,
+  transactionHash?: string
+  token?: TTokenInfo
+  isError?: boolean
+  error?: string
+}
+
 const ViewRestakeETH = ({ type }: { type: string }) => {
+  // default TxResultMessage
+  const defaultTxResultMessage={
+    isSuccess: false, 
+    isError: false,
+    transactionHash: '',
+    error: ''
+  }
 
   const { isActive, provider, address, chainID } = useWeb3()
   const { data: balanceETH } = useBalance({
@@ -36,8 +51,13 @@ const ViewRestakeETH = ({ type }: { type: string }) => {
   const [ amount, setAmount ] = useState<TNormalizedBN>(toNormalizedBN(0))
   const [ txStatus, setTxStatus ] = useState<TTxStatus>(defaultTxStatus)
   // Displays a message to the user after a transaction result is returned.
-  const [ txResultMessage, setTxResultMessage ] = useState<ReactNode>('')
+  const [ txResultMessage, setTxResultMessage ] = useState<TTransactionResult>(defaultTxResultMessage)
   const [ buttonLabel, setButtonLabel ] = useState<string>('Connect Wallet')
+  // txHash is used for transaction message handling
+  const [ txHash, setTxHash ] = useState<{ txHash: string }>({ txHash: '' })
+  // Opens transaction dialog to display transaction progress.
+  const [ isTxInProgress, setIsTxInProgress ] = useState(false)
+
 
   // Updates the balance when the balanceETH changes.
   useEffect(() => {
@@ -70,72 +90,44 @@ const ViewRestakeETH = ({ type }: { type: string }) => {
   const onDeposit = useCallback(async (): Promise<void> => {
     assert(isActive, 'Wallet not connected')
     assert(provider, 'Provider not connected')
-    setTxResultMessage('')
-    // TODO: Add a pending transaction message while waiting for result.
+    setTxResultMessage(defaultTxResultMessage)
+    setIsTxInProgress(true)
 
     // Initiates an ETH deposit into ynETH and updates the txStatus.
     // Used by the ButtonTx component.
     const result = await depositETH({
       connector: provider,
-      chainID: Number(process.env.NEXT_PUBLIC_BASE_CHAIN_ID),
+      chainID: Number(process.env.NEXT_PUBLIC_DEFAULT_CHAIN_ID),
       contractAddress: toAddress(process.env.NEXT_PUBLIC_YNETH_ADDRESS),
       amount: amount.raw,
-      minAmount: 0n,
-      statusHandler: setTxStatus
+      address: toAddress(address),
+      statusHandler: setTxStatus,
+      hashHandler: setTxHash,
     }) as DepositResult
     if (result.isSuccessful) {
       setAmount(toNormalizedBN(0))
-      setTxResultMessage(
-        <>
-          <div className='flex mt-2 items-center justify-center'>
-            <p className=''>Transaction Successful! View Tx</p>
-            <Link href={`https://goerli.etherscan.io/tx/${result?.receipt?.transactionHash}`} 
-              rel="noopener noreferrer" target="_blank">
-              <ExternalLink className='h-6 w-6 ml-2 text-primary hover:text-accent'/>
-            </Link>       
-          </div>
-          <div className='flex mt-2 items-center justify-center'>
-            <Button
-              className='bg-primary/60'
-              onClick={addTokenToWallet}
-            >
-              Add ynETH to Wallet
-            </Button>
-          </div>
-        </>
-      )
+      setTxResultMessage({
+        isSuccess: true,
+        transactionHash: result?.receipt?.transactionHash,
+        token: YNETH_TOKEN
+      })
     } else {
-      setTxResultMessage(<p className='text-sm text-red-500'>{result?.error?.details}</p>)}
-
+      setTxResultMessage({
+        isSuccess: false,
+        isError: true,
+        error: result?.error?.details
+      })
+    }
   }, [isActive, amount])
 
   // ? ************************ DEBUGGING ************************ 
-  useEffect(() => {
-    // console.log('canDeposit -->', canDeposit)
-    // console.log('balanceETH -->', balanceETH)
-  }, [canDeposit])
-
-  // TODO: Move this to provider.ts to be reused by other tokens.
-  const addTokenToWallet = async () => {
-    const ethereumWindow: any = window
-    const wasAdded = await ethereumWindow.ethereum?.request({
-      method: 'wallet_watchAsset',
-      params: {
-        type: 'ERC20',
-        options: {
-          address: YNETH_TOKEN.address,
-          symbol: YNETH_TOKEN.symbol, 
-          decimals: YNETH_TOKEN.decimals, 
-          image: '/yn-icon.svg',
-        },
-      },
-    })
-    // TODO: Add a message to the user if the token was added or not.
-  }
+  // useEffect(() => {
+  //   console.log('txHash -->', txHash?.txHash)
+  // }, [txHash])
 
   return (
     <>
-      <div className='pt-2'>
+      <div className=''>
         <div className='mt-5 grid gap-5'>
           <RestakeETHForm
             tokens={[ETH_TOKEN, YNETH_TOKEN]}
@@ -168,9 +160,13 @@ const ViewRestakeETH = ({ type }: { type: string }) => {
             {buttonLabel && txStatus.pending ? '' : buttonLabel}
           </ButtonTx>
         </div>
-        {txResultMessage && 
-          txResultMessage 
-        }
+        {/* ---------------- Transaction Dialog Component ------------------ */}
+        <TxDialog 
+          isTxInProgress={isTxInProgress}
+          txStatus={txStatus.pending}
+          txHash={txHash?.txHash}
+          txResultMessage={txResultMessage}
+        />
       </div>
     </>
   )

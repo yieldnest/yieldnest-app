@@ -17,7 +17,8 @@ function useTVL(): {TVL: number, TAL: TNormalizedBN} {
   // Fetches the total supply of ynETH.
   const { data } = useContractRead({
     ...YNETH_TOKEN,
-    functionName: 'totalSupply'
+    functionName: 'totalSupply',
+    watch: true
   })
 
   const totalValueLocked = useMemo((): {TVL: number, TAL: TNormalizedBN} => {

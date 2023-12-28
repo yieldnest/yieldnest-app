@@ -48,7 +48,8 @@ export const usePoolData = (token: TTokenInfo) => {
         functionName: 'balanceOf',
         args: [toAddress(address)]
       },
-    ]
+    ],
+    watch: true
   })
 
   useEffect((): void => {

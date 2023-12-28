@@ -1,7 +1,11 @@
 
 import assert from 'assert'
 import { BaseError } from 'viem'
-import { prepareWriteContract, switchNetwork, waitForTransaction, writeContract } from '@wagmi/core'
+import { prepareWriteContract, 
+  switchNetwork, 
+  waitForTransaction, 
+  writeContract, 
+  watchContractEvent } from '@wagmi/core'
 
 import { toBigInt } from '@/lib/format.bigNumber'
 import { assertAddress } from '@/lib/address'
@@ -20,7 +24,7 @@ export type TWagmiProviderContract = {
 
 // Initial status of a transaction.
 const defaultTxStatus = { none: true, pending: false, success: false, error: false }
-
+const defaultHash = {txHash: ''}
 /* This function takes a connector as input, checks if it's set, retrieves the
 wallet client and chain ID from the connector, and returns an object containing
 the wallet client, chain ID, and address. 
@@ -38,11 +42,14 @@ export async function toWagmiProvider(connector: Connector | undefined): Promise
   })
 }
 
+
 export type TWriteTransaction = {
 	chainID: number
 	connector: Connector | undefined
 	contractAddress: TAddress | undefined
 	statusHandler?: (status: typeof defaultTxStatus) => void
+  hashHandler?: (hash: typeof defaultHash) => void
+
 }
 
 type TPrepareWriteContractConfig<
@@ -53,6 +60,7 @@ type TPrepareWriteContractConfig<
 	walletClient?: WalletClient
 	address: TAddress | undefined
 }
+
 /**
  * This function handles a transaction by preparing the contract configuration,
  *  switching the network if necessary, and executing the transaction. 
@@ -67,9 +75,10 @@ export async function handleTx<
 	TFunctionName extends string
 >(
   args: TWriteTransaction,
-  props: TPrepareWriteContractConfig<TAbi, TFunctionName>
+  props: TPrepareWriteContractConfig<TAbi, TFunctionName>,
 ): Promise<TTxResponse> {
   args.statusHandler?.({...defaultTxStatus, pending: true})
+  args.hashHandler?.({...defaultHash, txHash: ''})
 
   let wagmiProvider = await toWagmiProvider(args.connector)
 
@@ -93,8 +102,10 @@ export async function handleTx<
     })
 
     const {hash} = await writeContract(config.request)
-    const receipt = await waitForTransaction({chainId: wagmiProvider.chainId, hash, confirmations: 2})
+    // hashHandler makes the hash update available to use for better tx user message handling
+    args.hashHandler?.({...defaultHash, txHash: hash})
 
+    const receipt = await waitForTransaction({chainId: wagmiProvider.chainId, hash, confirmations: 1})
     if (receipt.status === 'success') {
       args.statusHandler?.({...defaultTxStatus, success: true})
     } else if (receipt.status === 'reverted') {
@@ -114,7 +125,7 @@ export async function handleTx<
   } finally {
     setTimeout((): void => {
       args.statusHandler?.({...defaultTxStatus})
-    }, 3000)
+    }, 10000)
   }
 }
 

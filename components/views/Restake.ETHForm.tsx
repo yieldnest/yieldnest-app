@@ -47,7 +47,7 @@ const RestakeETHForm = ({ tokens, amount, onUpdateAmount, isDisabled}: {
   const { data: ynETHestimator, isLoading: loadingEstimator } = useContractRead({
     address: toAddress(process.env.NEXT_PUBLIC_YNETH_ADDRESS),
     abi: YNETH_POOL_ABI,
-    functionName: 'ethToynETH',
+    functionName: 'previewDeposit',
     args: [delayedAmount.raw],
     enabled: isActive
   })
@@ -94,11 +94,8 @@ const RestakeETHForm = ({ tokens, amount, onUpdateAmount, isDisabled}: {
       <form className={cn('flex w-full flex-col gap-4 rounded-md p-4 bg-background')}>
         <div className='flex justify-between items-center'>
           <input 
-            className='w-full pl-2 overflow-x-scroll border-none bg-background px-0 outline-none text-xl'
+            className='w-full pl-2 border-none bg-background px-0 outline-none text-xl'
             type={'number'}
-            inputMode={'numeric'}
-            min={0}
-            maxLength={20}
             step={1 / 10 ** (tokens[0]?.decimals || 18)}
             max={balance[0]?.normalized || 0}
             placeholder={'0.000000'}
@@ -106,7 +103,8 @@ const RestakeETHForm = ({ tokens, amount, onUpdateAmount, isDisabled}: {
             onChange={onChangeAmount}
             onWheel={(e) => (e.target as HTMLInputElement).blur()}
           />
-          <div className='flex items-center justify-between border border-border rounded-lg gap-2 p-2'>
+          <div className='flex items-center justify-center w-full max-w-[110px]
+            border border-border rounded-lg gap-2 p-2'>
             <p className='pr-2'>
               {tokens[0].symbol}
             </p>
@@ -152,7 +150,8 @@ const RestakeETHForm = ({ tokens, amount, onUpdateAmount, isDisabled}: {
                   formatAmount(toNormalizedBN(ynETHestimator).normalized, 2, 6) : '0.00'}
             </p>
           </div>
-          <div className='flex items-center justify-between border border-border rounded-lg gap-2 p-2'>
+          <div className='flex items-center justify-center w-full max-w-[110px]
+            border border-border rounded-lg gap-2 p-2'>
             <p className='pr-2'>
               {tokens[1].symbol}
             </p>
