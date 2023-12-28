@@ -1,6 +1,7 @@
 import { toAddress } from '@/lib/address'
 import type { TTokenInfo } from '@/types/index'
 import { erc20ABI } from '@wagmi/core'
+import YNETH_POOL_ABI  from '@/lib/abi/ynETHPool.abi'
 
 export const ETH_TOKEN: TTokenInfo = {
   address: toAddress('0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'),
@@ -25,10 +26,20 @@ export const STETH_TOKEN: TTokenInfo ={
 
 export const YNETH_TOKEN: TTokenInfo ={
   chainId: 5,
-  address: toAddress('0x096bcB45b3BB89b33d0DDCf92508Fe54f9b25Af1'),
+  address: toAddress('0x0091626e15caFd0F6Bc96dE7F12CEe444c0a212d'),
   name: 'YieldNest ETH',
   symbol: 'ynETH',
   decimals: 18,
   logoURI: '/yn-token-icon.svg',
-  abi: erc20ABI
+  abi: YNETH_POOL_ABI
+}
+
+export const YNETH_TOKEN_OLD: TTokenInfo ={
+  chainId: 5,
+  address: toAddress('0x88043867dD14A2BfA8279a0eD3252D5767b0b9EA'),
+  name: 'YieldNest ETH',
+  symbol: 'ynETH',
+  decimals: 18,
+  logoURI: '/yn-token-icon.svg',
+  abi: YNETH_POOL_ABI
 }
