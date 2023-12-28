@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { usePoolData } from '@/hooks/usePoolData'
 import { formatAmount } from '@/lib/format.number'
 import { useFetch } from '@/hooks/useFetch'
@@ -37,12 +37,8 @@ const PoolOverview = (props: PoolOverviewProps) => {
   })
 
   useEffect(() => {
-    // console.log('prices --->', !prices ? 'Loading' : prices?.data?.price)
-    // console.log('props --->', props.token)
-    // if (poolData.symbol) {
-    //   console.log('poolData on pool overivew', poolData)
-    // }
-  }, [props ])
+    // console.log('TAL.normalized --->',TAL.normalized)
+  }, [])
 
   return (
     <>
@@ -114,7 +110,7 @@ const PoolOverview = (props: PoolOverviewProps) => {
               </div>
               :
               <div className='flex justify-end'>
-                <Skeleton className="h-4 w-[125px]" />
+                {poolData.symbol ? <p>--</p> : <Skeleton className="h-4 w-[125px]" />}
               </div>
             }
           </div>
@@ -130,7 +126,7 @@ const PoolOverview = (props: PoolOverviewProps) => {
                 </Tooltip>
               </TooltipProvider>
             </div>
-            {Number(poolData.poolSupply.normalized) > 0 ?
+            {poolData.symbol ?
               <>
                 <p className='text-xl'>13.11%</p>
               </>
