@@ -3,7 +3,7 @@ import { truncateHex } from '@/lib/address'
 import { YNETH_TOKEN } from '@/lib/tokens'
 import { ImageWithFallback } from '@/components/common/ImageWithFallback'
 import { formatColor } from '@/lib/format.colors'
-import { avsArray } from '../../app/page'
+
 import PoolValidators from '@/components/views/PoolDetails.Validators'
 
 import { ExternalLink } from 'lucide-react'
@@ -16,6 +16,35 @@ type PoolOverviewProps = {
 const PoolDetails = (props: PoolOverviewProps) => {
 
   const etherscanURL = 'https://goerli.etherscan.io/address/'
+
+  const avsArray = [
+    {
+      name: 'EigenDA', 
+      logoURI: '/logos/eigenda.jpeg',
+      link: 'https://twitter.com/eigen_da',
+      description: `EigenDA is an AVS on Eigenlayer providing low-cost, 
+      hyperscale data availability to rollups, secured by ETH restaking.
+      `,
+      apr: 3.54
+    },
+    {
+      name: 'AltLayer', 
+      logoURI: '/logos/altlayer.svg',
+      link: 'https://twitter.com/alt_layer',
+      description: `Altlayer is a decentralized protocol that facilitates the 
+      launch of native and restaked rollups with both optimistic and zk rollup stacks.
+      `,
+      apr: 3.08
+    },
+    {
+      name: 'Espresso Systems', 
+      logoURI: '/logos/espresso.svg',
+      link: 'https://twitter.com/EspressoSys',
+      description: `The Espresso Sequencer is designed to offer rollups a means of 
+      achieving credible neutrality, enhanced interoperability, & long-term alignment with Ethereum.`,
+      apr: 2.64
+    },
+  ]
 
   return (
     <>

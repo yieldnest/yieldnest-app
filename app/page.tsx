@@ -20,7 +20,7 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip'
 
-export const avsArray = [
+const avsArray = [
   {
     name: 'EigenDA', 
     logoURI: '/logos/eigenda.jpeg',
