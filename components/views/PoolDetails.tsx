@@ -51,7 +51,7 @@ const PoolDetails = (props: PoolOverviewProps) => {
       {/* Details section */}
       <section className='flex w-full flex-col bg-card rounded-xl p-4'>
         <h2 className='text-3xl px-4'>{props.token[0].symbol} Details</h2>
-        <div className='w-full p-4 text-sm text-muted'>
+        <div className='w-full p-4 text-muted'>
           <p className=''>{` 
           ynETH is a native liquid restaking token that earns yield from 
           ETH validators and AVSs on top of EigenLayer. 
@@ -67,7 +67,7 @@ const PoolDetails = (props: PoolOverviewProps) => {
           </div>
           {/* --------------------------- Protocol Economics --------------------------- */} 
           <div className='flex w-full my-2 gap-4'>
-            <div className='text-muted text-sm'>
+            <div className='text-muted'>
               <h3 className='text-foreground text-xl'>Protocol Economics</h3>
               <p className=''>
                 {`YieldNest does not have any hidden fees. The protocol generates rewards and distrubutes 
