@@ -7,7 +7,7 @@ import { X } from 'lucide-react'
 import { cn } from '@/lib/cn'
 
 type DialogContentProps = {
-  handleDialog: () => void;
+  handleDialog?: () => void;
   // other props
 }
 
