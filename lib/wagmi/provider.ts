@@ -4,8 +4,7 @@ import { BaseError } from 'viem'
 import { prepareWriteContract, 
   switchNetwork, 
   waitForTransaction, 
-  writeContract, 
-  watchContractEvent } from '@wagmi/core'
+  writeContract } from '@wagmi/core'
 
 import { toBigInt } from '@/lib/format.bigNumber'
 import { assertAddress } from '@/lib/address'
@@ -42,14 +41,12 @@ export async function toWagmiProvider(connector: Connector | undefined): Promise
   })
 }
 
-
 export type TWriteTransaction = {
 	chainID: number
 	connector: Connector | undefined
 	contractAddress: TAddress | undefined
 	statusHandler?: (status: typeof defaultTxStatus) => void
   hashHandler?: (hash: typeof defaultHash) => void
-
 }
 
 type TPrepareWriteContractConfig<
@@ -102,10 +99,20 @@ export async function handleTx<
     })
 
     const {hash} = await writeContract(config.request)
-    // hashHandler makes the hash update available to use for better tx user message handling
+    /* ******************************************************
+	** hashHandler, makes the hash update available to use for
+  better tx user message handling.
+	*********************************************************/
     args.hashHandler?.({...defaultHash, txHash: hash})
 
-    const receipt = await waitForTransaction({chainId: wagmiProvider.chainId, hash, confirmations: 1})
+    /**
+ *  @function waitForTransaction, waits for the transaction to be accepted and returns the receipt.
+ *  @param chainId - The chain ID of the network where the transaction was sent.
+ *  @param hash - The hash of the transaction to wait for.
+ *  @returns A receipt that is passed on for transaction messaging, success or error messages.
+ */
+    const receipt = await waitForTransaction({chainId: wagmiProvider.chainId, hash})
+
     if (receipt.status === 'success') {
       args.statusHandler?.({...defaultTxStatus, success: true})
     } else if (receipt.status === 'reverted') {
@@ -125,7 +132,7 @@ export async function handleTx<
   } finally {
     setTimeout((): void => {
       args.statusHandler?.({...defaultTxStatus})
-    }, 10000)
+    }, 4000)
   }
 }
 
