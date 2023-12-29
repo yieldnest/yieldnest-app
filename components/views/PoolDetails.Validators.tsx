@@ -27,7 +27,7 @@ const PoolValidators = () => {
       created: '2023-12/26'
     },
     {
-      publicKey: '0xa57ee111603c6ca106606bacce94778fc41ca0a0260ec9bd047a991bef1737567ed27371c753719cfd8fb5ac3cf08175',
+      publicKey: '0x010000000000000000000000a1237efe3159197537f41f510f01d09394780f08',
       earned: '0.01508',
       apr: '2.54',
       created: '2023-12-19'
