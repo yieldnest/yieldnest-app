@@ -3,7 +3,7 @@ import { ReactNode } from 'react'
 
 import AppWrapper from '@/components/common/AppWrapper'
 import { RootContext } from '@/contexts/RootContext'
-
+import { Toaster } from '@/components/ui/toaster'
 
 import { goerli } from 'wagmi/chains'
 
@@ -19,6 +19,7 @@ const YieldNestProvider = ({ children }: {children: ReactNode }) => {
         <main className='grow'>
           {children}
         </main>
+        <Toaster />
       </AppWrapper>
     </RootContext>
   )
