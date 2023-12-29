@@ -32,6 +32,7 @@ export function TxDialog({ isTxInProgress, txStatus, txHash, txResultMessage }: 
   const [ addressToCopy, setAddressToCopy ] = useState('')
   const handleCopy = useCopyToClipboard(addressToCopy)
 
+
   useMemo(() => {
     setAddressToCopy(txHash)
   }, [txHash])
@@ -64,7 +65,7 @@ export function TxDialog({ isTxInProgress, txStatus, txHash, txResultMessage }: 
   }
 
   return (
-    <Dialog open={isDialogOpen}>
+    <Dialog open={isDialogOpen} >
       <DialogTrigger asChild>
         {isTxInProgress &&
         <Button 
@@ -73,7 +74,7 @@ export function TxDialog({ isTxInProgress, txStatus, txHash, txResultMessage }: 
         </Button>
         }
       </DialogTrigger>
-      <DialogContent className="sm:max-w-lg">
+      <DialogContent className="sm:max-w-lg" handleDialog={handleDialog}>
         <DialogHeader>
           <DialogTitle className='text-2xl'>Transaction Pending</DialogTitle>
         </DialogHeader>
