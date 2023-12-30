@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { YNETH_TOKEN } from '@/lib/tokens'
 import { truncateHex } from '@/lib/address'
 import { useCopyToClipboard } from '@/hooks/useCopyToClipboard'
+import { useTokenToWallet } from '@/hooks/useTokenToWallet'
 import { Copy, ExternalLink, Loader, CheckCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
@@ -15,6 +16,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
+import { useToast } from '@/components/ui/use-toast'
 
 import type { TTransactionResult } from '@/components/views/Restake.ETH'
 
@@ -32,6 +34,9 @@ export function TxDialog({ isTxInProgress, txStatus, txHash, txResultMessage }: 
   const [ addressToCopy, setAddressToCopy ] = useState('')
   const handleCopy = useCopyToClipboard(addressToCopy)
 
+  const { addToken, canAdd } = useTokenToWallet(YNETH_TOKEN, YNETH_TOKEN.logoURI)
+  const { toast } = useToast()
+
 
   useMemo(() => {
     setAddressToCopy(txHash)
@@ -46,22 +51,13 @@ export function TxDialog({ isTxInProgress, txStatus, txHash, txResultMessage }: 
     setIsDialogOpen(!isDialogOpen)
   }
 
-  // TODO: Move this to provider.ts to be reused by other tokens.
+  // TODO: Move this to it's own component to be reused by other tokens.
   const addTokenToWallet = async () => {
-    const ethereumWindow: any = window
-    const wasAdded = await ethereumWindow.ethereum?.request({
-      method: 'wallet_watchAsset',
-      params: {
-        type: 'ERC20',
-        options: {
-          address: YNETH_TOKEN.address,
-          symbol: YNETH_TOKEN.symbol, 
-          decimals: YNETH_TOKEN.decimals, 
-          image: '/yn-icon.svg',
-        },
-      },
-    })
-    // TODO: Add a message to the user if the token was added or not.
+    const result = await addToken?.()
+    if (!result) return
+    toast({
+      description: 'Token added to wallet.'
+    })  
   }
 
   return (
@@ -112,14 +108,17 @@ export function TxDialog({ isTxInProgress, txStatus, txHash, txResultMessage }: 
             ''
           }
           
-
-          {txResultMessage.isSuccess &&
+          {/* Temp solution to false error from waitForTransaction hook:
+            - Replace conditions txResultMessage?.isSucess to txHash
+            and replace data txResultMessage?.transactionHash with txHash.
+          */}
+          {(!txStatus && txHash )&&
             <>
               <div className='flex flex-col items-center justify-center'>
                 <p className='text-xl text-primary'>Transaction Successful!</p>
                 <div className='flex items-center justify-center mt-4'>
                   <p className='text-muted'>View Transaction</p>
-                  <Link href={`https://goerli.etherscan.io/tx/${txResultMessage?.transactionHash}`} 
+                  <Link href={`https://goerli.etherscan.io/tx/${txHash}`} 
                     rel='noopener noreferrer' target='_blank'>
                     <ExternalLink className='h-4 w-4 ml-1 text-muted hover:text-primary/60'/>
                   </Link>    
@@ -128,19 +127,22 @@ export function TxDialog({ isTxInProgress, txStatus, txHash, txResultMessage }: 
                 <div className={`flex items-center gap-2 text-muted tx-sm mb-4 
                 hover:cursor-pointer hover:text-primary/60`} 
                 onClick={handleCopy}>
-                  <p>{truncateHex(txResultMessage?.transactionHash, 6)}</p>
+                  <p>{truncateHex(txHash, 6)}</p>
                   <Copy className='h-3 w-3' />
                 </div>
                 
               </div>
-              <div className='flex mt-2 items-center justify-center'>
-                <Button
-                  className='bg-background hover:bg-primary/30'
-                  onClick={addTokenToWallet}
-                >
+              {canAdd && 
+                <div className='flex mt-2 items-center justify-center'>
+                  <Button
+                    className='bg-background hover:bg-primary/30'
+                    onClick={addTokenToWallet}
+                  >
                 Add ynETH to Wallet
-                </Button>
-              </div>
+                  </Button>
+                </div>
+              }
+              
             </>
           }
           {txResultMessage.isError && <p className='text-sm text-red-500'>{txResultMessage?.error}</p>}
