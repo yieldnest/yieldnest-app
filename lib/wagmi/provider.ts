@@ -111,6 +111,7 @@ export async function handleTx<
  *  @param hash - The hash of the transaction to wait for.
  *  @returns A receipt that is passed on for transaction messaging, success or error messages.
  */
+    
     const receipt = await waitForTransaction({chainId: wagmiProvider.chainId, hash})
 
     if (receipt.status === 'success') {
@@ -120,7 +121,7 @@ export async function handleTx<
     }
     console.log('Transaction successful!')
     return ({isSuccessful: receipt.status === 'success', receipt})
-    
+
   } catch (error) {
     if (!(error instanceof BaseError)) {
       return ({isSuccessful: false, error})
