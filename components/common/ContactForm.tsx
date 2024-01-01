@@ -37,7 +37,7 @@ const ContactForm = () => {
     event.preventDefault()
     setEmailPending(true)
     try {
-      const { data } = await axios.post('http://localhost:3000/api/sendEmail', contactInputs)
+      const { data } = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URI}/api/sendEmail`, contactInputs)
       // Handle successful submission (e.g., display a success message)
 
       if (data.status === 'ok') {
