@@ -85,7 +85,7 @@ const WithdrawForm = ({ tokens, amount, onUpdateAmount, isDisabled}: {
       <form className={cn('flex w-full flex-col gap-4 rounded-md p-4 bg-background')}>
         <div className='flex justify-between items-center'>
           <input 
-            className='w-full pl-2 overflow-x-scroll border-none bg-background px-0 outline-none text-xl'
+            className='w-full pl-2 border-none bg-background px-0 outline-none text-xl'
             type={'number'}
             inputMode={'numeric'}
             min={0}
@@ -136,7 +136,7 @@ const WithdrawForm = ({ tokens, amount, onUpdateAmount, isDisabled}: {
       <div className={cn('flex w-full flex-col gap-4 rounded-md p-4 bg-background')}>
         <div className='flex justify-between items-center'>
           <div>
-            <p className='w-full pl-2 overflow-x-scroll border-none bg-background text-muted px-0 outline-none text-xl'>
+            <p className='w-full pl-2 border-none bg-background text-muted px-0 outline-none text-xl'>
               {/* Placeholder to represent a 1:1 exchange rate. */}
               {amount?.normalized ?
                 formatAmount(amount?.normalized, 2, 6) 
