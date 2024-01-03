@@ -65,7 +65,8 @@ const Index = () => {
     },
     {
       name: 'FRAX',
-      logoURI: '/logos/frax-logo.svg'
+      // eslint-disable-next-line max-len
+      logoURI: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x853d955aCEf822Db058eb8505911ED77F175b99e/logo.png'
     },{
       name: 'sDAI',
       logoURI: '/logos/sdai-logo.svg'
@@ -75,14 +76,14 @@ const Index = () => {
   const tryLSDIcons = [
     {
       name: 'wstETH',
-      logoURI: '/logos/wsteth-icon.svg'
+      logoURI: 'https://tokens.1inch.io/0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0.png'
     },
     {
       name: 'rETH',
-      logoURI: '/logos/reth-icon.png'
+      logoURI: 'https://tokens.1inch.io/0xae78736cd615f374d3085123a210448e74fc6393.png'
     },{
       name: 'sfrxETH',
-      logoURI: '/logos/sfrx-icon.png'
+      logoURI: '/logos/sfrx-icon.svg'
     },
   ]
 
