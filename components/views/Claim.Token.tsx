@@ -44,7 +44,7 @@ const ViewClaimToken = ({ tokens }: { tokens: TTokenInfoArray }) => {
         <form className='flex w-full flex-col gap-4 rounded-md p-4 bg-background'>
           <div className='flex justify-between items-center'>
             <input 
-              className='w-full pl-2 overflow-x-scroll border-none bg-background px-0 outline-none text-xl'
+              className='w-full pl-2 border-none bg-background px-0 outline-none text-xl'
               type={'number'}
               inputMode={'numeric'}
               min={0}

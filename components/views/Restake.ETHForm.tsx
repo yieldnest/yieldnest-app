@@ -142,7 +142,7 @@ const RestakeETHForm = ({ tokens, amount, onUpdateAmount, isDisabled}: {
       <div className={cn('flex w-full flex-col gap-4 rounded-md p-4 bg-background')}>
         <div className='flex justify-between items-center'>
           <div>
-            <p className='w-full pl-2 overflow-x-scroll border-none bg-background px-0 outline-none text-xl'>
+            <p className='w-full pl-2 border-none bg-background px-0 outline-none text-xl'>
               {loadingEstimator ? 
                 <Loader className='h-6 w-6 animate-spin-slow ' /> 
                 :
