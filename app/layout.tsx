@@ -1,17 +1,8 @@
 import type { Metadata } from 'next'
-import { Nunito, Archivo } from 'next/font/google'
+import { Arimo } from 'next/font/google'
 import './globals.css'
 
-import YieldNestProvider from '@/components/common/YieldNestProvider'
-
-const nunito = Nunito({ 
-  subsets: ['latin'],
-  variable: '--font-nunito',
-})
-const archivo = Archivo({ 
-  subsets: ['latin'],
-  variable: '--font-archivo',
-})
+const arimo = Arimo({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'YieldNest',
@@ -25,11 +16,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${nunito.variable} ${archivo.variable}`}>
-        <YieldNestProvider>
-          {children}
-        </YieldNestProvider>
-      </body>
+      <body className={arimo.className}>{children}</body>
     </html>
   )
 }
